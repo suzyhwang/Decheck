@@ -1,0 +1,129 @@
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-1Thin.woff")
+    format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff")
+    format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff")
+    format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-7ExtraBold.woff")
+    format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  font-family: "S-CoreDream";
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 80px;
+  background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+}
+#header_navigator {
+  width: 1260px;
+  display: flex;
+  align-items: center;
+}
+.header_divider {
+  flex: 1;
+  display: flex;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.home_mypage {
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 300;
+}
+.header_middle:hover {
+  color: #db643e;
+}
+
+#login_button {
+  width: 94px;
+  height: 36px;
+  border-style: none;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: #db643e;
+  cursor: pointer;
+}
+
+.login_area {
+  justify-content: end;
+}
+
+.header_middle {
+  width: 80px;
+  cursor: pointer;
+}
+
+.home_button {
+  text-align: right;
+  margin-right: 20px;
+}
+
+.mypage_button {
+  text-align: left;
+  margin-left: 20px;
+}
+
+body {
+  margin: 0;
+}
+
+footer {
+  width: 100%;
+  height: 130px;
+  background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#github_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 120px;
+  margin-right: 60px;
+  cursor: pointer;
+}
+
+#inquiry_txt {
+  width: 120px;
+  cursor: pointer;
+}
+a {
+  text-decoration: none;
+}
+a:visited {
+  color: #2d2d2d;
+}

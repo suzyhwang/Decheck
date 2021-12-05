@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
+  <body>
+   
+    <input placeholder="todo를 입력하세요"></input>
+    <button class="submit">확인</button>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script>
+      const firebaseConfig = {
+        apiKey: "AIzaSyDhjIW_K5mnfZhlyAMFJUi8qDvt7RwofZQ",
+        authDomain: "decheck-c8343.firebaseapp.com",
+        projectId: "decheck-c8343",
+        storageBucket: "decheck-c8343.appspot.com",
+        messagingSenderId: "590656093406",
+        appId: "1:590656093406:web:b4a7f8be91a5ca4bfc164f",
+        measurementId: "G-8P4YGTX02W",
+      };
+
+      // Initialize Firebase
+      firebase.initializeApp(firebaseConfig);
+    </script>
+    <script>
+        const db = firebase.firestore();
+        const input = document.getElementsByTagName('input');
+        const button = document.querySelector('.submit');
+        button.addEventListener('click', function(event){
+            
+            db.collection('todolist').doc('todo4').set({title:  input[0].value, boolean: false }).then((res)=>
+         {
+            console.log(res); 
+            window.location.href="/index.html"}).catch((err)=>console.log(err))
+       
+            
+        })
+    </script>
+  </body>
+</html>
