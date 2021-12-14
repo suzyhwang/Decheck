@@ -258,6 +258,7 @@ input[name="userPassword"] {
 }
 
 #warning_msg {
+  visibility: hidden;
   text-align: center;
   margin-bottom: 22px;
 }

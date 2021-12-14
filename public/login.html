@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="login.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Decheck</title>
+  </head>
+  <body>
+    <header>
+      <nav id="header_navigator">
+        <div class="header_divider logo">
+          <img src="./decheck_logo.svg" alt="logo" />
+        </div>
+        <div class="header_divider home_mypage">
+          <span class="home_button header_middle">
+            <a href="index.html"> 홈 </a>
+          </span>
+          <span class="mypage_button header_middle">마이페이지</span>
+        </div>
+        <div class="header_divider login_area">
+          <a class="a_hover" href="login.html">
+            <button id="header_login_button">로그인</button>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="./firebase.js"></script>
+    <div id="container">
+      <div class="login_container">
+        <form id="loginForm">
+          <div class="login_title">
+            <span> 로그인 </span>
+          </div>
+          <label for="userEmail">이메일</label>
+          <input type="email" name="userEmail" required />
+          <label for="userPassword">비밀번호</label>
+          <input type="password" name="userPassword" required />
+          <div id="warning_msg">
+            <img src="warning_icon.svg" alt="warning_icon" />
+            <span> 이메일과 비밀번호를 확인해 주세요. </span>
+          </div>
+          <button class="login_button" type="submit">로그인</button>
+        </form>
+        <button>
+          <img id="github_login_icon" src="github_icon.svg" alt="github_icon" />
+          깃허브 로그인
+        </button>
+
+        <button>
+          <img
+            id="kakao_login_icon"
+            src="kakao_icon.svg"
+            alt="kakao_icon"
+          />카카오 로그인
+        </button>
+        <span id="go_signup">아직 회원이 아니신가요? 회원가입하러 가기</span>
+      </div>
+    </div>
+
+    <footer>
+      <a href="https://github.com/suzyhwang/Decheck/wiki" target="_blank">
+        <div id="github_container">
+          <img src="github_icon.svg" alt="github_icon" />
+          <span id="github_name">suzyhwang</span>
+        </div>
+      </a>
+      <span id="inquiry_txt">문의하기</span>
+    </footer>
+    <script>
+      const warningMsg = document.querySelector("#warning_msg");
+      const loginForm = document.querySelector("#loginForm");
+      loginForm.addEventListener("submit", (e) => {
+        e.preventDefault();
+        const email = loginForm["userEmail"].value;
+        const password = loginForm["userPassword"].value;
+
+        firebase
+          .auth()
+          .signInWithEmailAndPassword(email, password)
+          .then((userCredential) => {
+            loginForm.reset();
+            warningMsg.style.visibility = "hidden";
+            console.log("로그인됨", userCredential);
+          })
+          .catch((err) => {
+            warningMsg.style.visibility = "visible";
+          });
+      });
+    </script>
+  </body>
+</html>
