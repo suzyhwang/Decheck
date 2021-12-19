@@ -134,6 +134,10 @@ a:hover {
   color: #db643e;
 }
 
+a:last-child:hover {
+  color: #2d2d2d;
+}
+
 :root {
   background-color: #e5e5e5;
 }

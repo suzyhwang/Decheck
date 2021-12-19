@@ -34,22 +34,23 @@
 
     <script src="./firebase.js"></script>
     <script src="./firebase.js"></script>
+
     <script>
-      const db = firebase.firestore();
-      db.collection("todolist")
-        .get()
-        .then((res) => {
-          res.forEach((doc) => {
-            const todo = document.querySelector(".test");
-            let todoDiv = document.createElement("span");
-            let todoInput = document.createElement("input");
-            todoInput.type = "checkbox";
-            todoInput.checked = doc.data().boolean;
-            todo.append(todoInput);
-            todo.append(todoDiv);
-            todoDiv.textContent = `${doc.data().title}`;
-          });
-        });
+      // const db = firebase.firestore();
+      // db.collection("todolist")
+      //   .get()
+      //   .then((res) => {
+      //     res.forEach((doc) => {
+      //       const todo = document.querySelector(".test");
+      //       let todoDiv = document.createElement("span");
+      //       let todoInput = document.createElement("input");
+      //       todoInput.type = "checkbox";
+      //       todoInput.checked = doc.data().boolean;
+      //       todo.append(todoInput);
+      //       todo.append(todoDiv);
+      //       todoDiv.textContent = `${doc.data().title}`;
+      //     });
+      //   });
     </script>
     <footer>
       <a href="https://github.com/suzyhwang/Decheck/wiki" target="_blank">
