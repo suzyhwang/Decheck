@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="signup.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Decheck</title>
+  </head>
+  <body>
+    <header>
+      <nav id="header_navigator">
+        <div class="header_divider logo">
+          <img src="./decheck_logo.svg" alt="logo" />
+        </div>
+        <div class="header_divider home_mypage">
+          <span class="home_button header_middle">
+            <a href="index.html"> 홈 </a>
+          </span>
+          <span class="mypage_button header_middle">마이페이지</span>
+        </div>
+        <div class="header_divider login_area">
+          <a class="a_hover" href="login.html">
+            <button id="header_login_button">로그인</button>
+          </a>
+        </div>
+      </nav>
+    </header>
+
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="./firebase.js"></script>
+    <div id="container">
+      <div class="login_container">
+        <form id="registerForm">
+          <div class="login_title">
+            <span> 회원가입 </span>
+          </div>
+          <label for="userNickname">닉네임</label>
+          <input
+            type="text"
+            maxlength="10"
+            name="userNickname"
+            placeholder="10글자 이내로 작성해주세요"
+            required
+          />
+          <label for="userEmail">이메일</label>
+          <div class="email_container">
+            <input type="email" name="userEmail" required />
+            <button id="email_check_btn">중복 확인</button>
+          </div>
+          <div id="email_check">이메일 중복 확인이 필요합니다.</div>
+          <div id="email_fail">이미 가입된 이메일입니다.</div>
+          <div id="email_pass">사용 가능한 이메일입니다.</div>
+          <label for="userPassword">비밀번호</label>
+          <input type="password" name="userPassword" required />
+          <div id="password_not_suit" class="warning_msg">
+            8~16글자, 영문 대소문자, 숫자, 특수문자를 사용하세요.
+          </div>
+          <label for="userPasswordCheck">비밀번호 확인</label>
+          <input type="password" name="userPasswordCheck" required />
+          <div id="password_not_match" class="warning_msg">
+            비밀번호가 일치하지 않습니다. 다시 확인해주세요.
+          </div>
+          <button class="login_button" type="submit">확인</button>
+        </form>
+
+        <a href="login.html">
+          <span id="go_signup">이미 회원이신가요? 로그인 하러가기</span>
+        </a>
+      </div>
+    </div>
+
+    <footer>
+      <a href="https://github.com/suzyhwang/Decheck/wiki" target="_blank">
+        <div id="github_container">
+          <img src="github_icon.svg" alt="github_icon" />
+          <span id="github_name">suzyhwang</span>
+        </div>
+      </a>
+      <span id="inquiry_txt">문의하기</span>
+    </footer>
+    <script>
+      const emailCheckReqMsg = document.querySelector("#email_check");
+      const emailCheck = document.querySelector("#email_check_btn");
+      const emailUsable = document.querySelector("#email_pass");
+      const emailNotUsable = document.querySelector("#email_fail");
+      const warningMsg = document.querySelector("#password_not_match");
+      const registerForm = document.querySelector("#registerForm");
+      const passwordNotSuit = document.querySelector("#password_not_suit");
+      registerForm.addEventListener("input", function (e) {
+        e.preventDefault();
+        const email = registerForm["userEmail"].value;
+        const password = registerForm["userPassword"].value;
+        const passwordCheck = registerForm["userPasswordCheck"].value;
+
+        function Inspect(data, type) {
+          switch (type) {
+            case "nickname":
+              const nickname = /^([a-zA-Z0-9가-힣]){2,10}$/;
+              // 2~10글자, 영어, 한글, 숫자만 가능
+              return nickname.test(data);
+            case "email":
+              const email =
+                /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+              return email.test(data);
+            case "password":
+              const password =
+                /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,16}/;
+              //최소 8자 및 최대 16자, 대문자 하나 이상, 소문자 하나 이상, 숫자 하나 이상, 특수 문자 하나 이상
+              return password.test(data);
+            default:
+              return false;
+          }
+        }
+        emailCheck.addEventListener(
+          "click",
+          function (e) {
+            e.preventDefault();
+            firebase
+              .auth()
+              .signInWithEmailAndPassword(email, "1")
+              .catch((err) => {
+                if (err.code === "auth/wrong-password") {
+                  emailCheckReqMsg.style.display = "none";
+                  emailUsable.style.display = "none";
+                  emailNotUsable.style.display = "block";
+                  console.log("등록된 이메일입니다.");
+                } else if (err.code === "auth/user-not-found") {
+                  emailCheckReqMsg.style.display = "none";
+                  emailUsable.style.display = "block";
+                  emailNotUsable.style.display = "none";
+                  console.log("사용가능한 이메일입니다.");
+                } else {
+                  console.log("auth/too-many-requests");
+                  emailCheckReqMsg.style.display = "block";
+                  emailNotUsable.style.display = "none";
+                  emailUsable.style.display = "none";
+                }
+              });
+          },
+          { once: true }
+        );
+
+        if (password.length > 3) {
+          if (!Inspect(password, "password")) {
+            console.log("통과안됨");
+            passwordNotSuit.style.visibility = "visible";
+          } else if (Inspect(password, "password")) {
+            console.log("통과!");
+            passwordNotSuit.style.visibility = "hidden";
+          }
+        }
+
+        if (
+          password.length > 3 &&
+          passwordCheck.length > 3 &&
+          password !== passwordCheck
+        ) {
+          warningMsg.style.visibility = "visible";
+        } else if (password === passwordCheck) {
+          warningMsg.style.visibility = "hidden";
+        }
+
+        registerForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          firebase
+            .auth()
+            .createUserWithEmailAndPassword(email, password)
+            .then((userCredential) => {
+              // Signed in
+              console.log(userCredential);
+              var user = userCredential.user;
+              // ...
+            })
+            .catch((error) => {
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // ..
+            });
+        });
+      });
+      const nickname = registerForm["userNickname"].value;
+      const Register = registerForm.addEventListener("submit", (e) => {});
+    </script>
+  </body>
+</html>
