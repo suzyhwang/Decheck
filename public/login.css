@@ -41,6 +41,8 @@ header {
   width: 100%;
   height: 80px;
   background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+  color: #2d2d2d;
+  border-bottom: 1px solid #e0dde1;
 }
 #header_navigator {
   width: 1260px;
@@ -72,6 +74,7 @@ header {
   font-size: 14px;
   font-weight: 500;
   color: #ffffff;
+  margin-top: 10px;
   background: #db643e;
   cursor: pointer;
 }
@@ -108,6 +111,7 @@ footer {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 1px solid #e0dde1;
 }
 
 #github_container {
@@ -132,6 +136,10 @@ a:visited {
 
 a:hover {
   color: #db643e;
+}
+
+a:last-child:hover {
+  color: #2d2d2d;
 }
 
 :root {
@@ -192,6 +200,11 @@ button {
   border: 1px solid #e0dde1;
   margin-bottom: 12px;
 }
+
+button:active {
+  background: #f5f5f594;
+}
+
 .login_button {
   border-style: none;
   background: #db643e;
@@ -270,4 +283,73 @@ input[name="userPassword"] {
 
 #warning_msg img {
   vertical-align: text-bottom;
+}
+
+@media screen and (max-width: 37.5rem) {
+  .login_title {
+    font-size: 20px;
+    width: 320px;
+  }
+  label {
+    font-size: 0.8rem;
+  }
+  input {
+    width: 320px;
+  }
+  button {
+    width: 320px;
+    font-size: 0.8rem;
+  }
+  .login_button {
+    font-size: 0.8rem;
+  }
+  #warning_msg span {
+    font-size: 0.8rem;
+  }
+  #warning_msg img {
+    width: 15px;
+    height: 15px;
+  }
+  #go_signup {
+    font-size: 0.8rem;
+  }
+  footer {
+    font-size: 12px;
+  }
+  footer img {
+    width: 18px;
+    height: 18px;
+  }
+  #github_container {
+    width: 90px;
+    margin-right: 35px;
+  }
+  #inquiry_txt {
+    width: 50px;
+  }
+  #github_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+  }
+  #kakao_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 13px;
+    margin-right: 4.58px;
+  }
+  .login_container {
+    border: none;
+    transition: 0.5s all;
+  }
+  #container {
+    background-color: #fdfbfe;
+    margin-top: 0px;
+    transition: 0.5s all;
+  }
+  :root {
+    background-color: #fdfbfe;
+    transition: 0.5s all;
+  }
 }

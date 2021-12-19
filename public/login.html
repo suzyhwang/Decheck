@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="login.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <title>Decheck</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init("91566c603566ac0a1b3c5959e0c58d24");
+
+      // SDK 초기화 여부를 판단합니다.
+      console.log(Kakao.isInitialized());
+    </script>
   </head>
   <body>
     <header>
@@ -49,19 +57,21 @@
           </div>
           <button class="login_button" type="submit">로그인</button>
         </form>
-        <button>
+        <button id="github_login_button">
           <img id="github_login_icon" src="github_icon.svg" alt="github_icon" />
           깃허브 로그인
         </button>
 
-        <button>
+        <button id="kakao_login_button">
           <img
             id="kakao_login_icon"
             src="kakao_icon.svg"
             alt="kakao_icon"
           />카카오 로그인
         </button>
-        <span id="go_signup">아직 회원이 아니신가요? 회원가입하러 가기</span>
+        <a href="signup.html">
+          <span id="go_signup">아직 회원이 아니신가요? 회원가입하러 가기</span>
+        </a>
       </div>
     </div>
 
@@ -74,14 +84,16 @@
       </a>
       <span id="inquiry_txt">문의하기</span>
     </footer>
+
     <script>
       const warningMsg = document.querySelector("#warning_msg");
+      // 일반 로그인 시작
       const loginForm = document.querySelector("#loginForm");
-      loginForm.addEventListener("submit", (e) => {
+      const Basic_Login = loginForm.addEventListener("submit", (e) => {
         e.preventDefault();
         const email = loginForm["userEmail"].value;
         const password = loginForm["userPassword"].value;
-
+        console.log(email);
         firebase
           .auth()
           .signInWithEmailAndPassword(email, password)
@@ -89,9 +101,137 @@
             loginForm.reset();
             warningMsg.style.visibility = "hidden";
             console.log("로그인됨", userCredential);
+            window.location.replace("http://localhost:5000/index.html");
           })
           .catch((err) => {
             warningMsg.style.visibility = "visible";
+          });
+      });
+      const passwordInput = loginForm["userPassword"].value;
+
+      // 엔터 키 여러번 입력 시에도 로그인 버튼 실행
+      let fired = false;
+      passwordInput.onkeydown = function (e) {
+        if (e.key == "Enter") {
+          if (!fired) {
+            fired = true;
+            Basic_Login();
+          }
+        }
+        e.preventDefault();
+      };
+
+      passwordInput.onkeyup = function () {
+        fired = false;
+      };
+      // 일반 로그인 끝
+
+      // 카카오 로그인 버튼 가져오기
+      const kakaoLogin = document.querySelector("#kakao_login_button");
+      kakaoLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+        // 코드 받아오는 카카오 함수
+        Kakao.Auth.authorize({
+          redirectUri: "http://localhost:5000/login.html",
+        });
+      });
+      // window.location.search = url 의 query를 담아줌
+      const code = window.location.search.split("=")[1];
+      const KAKAO_REST_API_KEY = "b8b1e96f2212a535723ed15cc68c43d3";
+      const KAKAO_REDIRECT_URI = "http://localhost:5000/login.html";
+      // 코드가 존재할 시에만 실행
+      if (code) {
+        let url = `https://kauth.kakao.com/oauth/token?grant_type=authorization_code&client_id=${KAKAO_REST_API_KEY}&redirect_uri=${KAKAO_REDIRECT_URI}&code=${code}`;
+        // 자바스크립트 서버 요청 보낼 시 xhr 사용
+        let xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+        xhr.send();
+        // xhr.onreadystatechange도 가능
+        // xhr.onload - 요청 완료만 잡아내도 되면 사용
+
+        xhr.onload = () => {
+          if (xhr.status === 200) {
+            let token_Info = JSON.parse(xhr.response);
+            const kakao_access_token = token_Info.access_token;
+            console.log(token_Info.access_token);
+            let token = {
+              token: kakao_access_token,
+            };
+            let req = new XMLHttpRequest();
+            // 서버로 post 요청 보내서 response로 firebaseToken 받기
+            const tokenurl = "http://localhost:8000/verifyToken";
+            req.open("POST", tokenurl);
+            req.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+            req.setRequestHeader("Access-Control-Allow-Origin", "*");
+            req.setRequestHeader("Content-Type", "application/json"); // 컨텐츠타입을 json으로
+            req.send(JSON.stringify(token)); // 데이터를 stringify해서 보냄
+            req.onload = function () {
+              if (req.status === 200 || req.status === 201) {
+                let success_kakao_token = JSON.parse(
+                  req.responseText
+                ).firebase_token;
+                firebase
+                  .auth()
+                  .signInWithCustomToken(success_kakao_token)
+                  .then((userCredential) => {
+                    // Signed in
+                    let user = userCredential.user;
+                    // ...
+                    window.location.replace("http://localhost:5000/index.html");
+                    console.log("카카오 로그인 성공");
+                  })
+                  .catch((error) => {
+                    let errorCode = error.code;
+                    let errorMessage = error.message;
+                    // ...
+                  });
+              } else {
+                console.error(req);
+              }
+            };
+            console.log("통신 성공");
+          } else {
+            //통신 실패
+            console.log("통신 실패");
+          }
+        };
+      }
+
+      // 깃헙 로그인 버튼 가져오기
+      const githubLogin = document.querySelector("#github_login_button");
+      let provider = new firebase.auth.GithubAuthProvider();
+      provider.addScope("repo");
+      githubLogin.addEventListener("click", (e) => {
+        e.preventDefault();
+
+        firebase
+          .auth()
+          .signInWithPopup(provider)
+          .then((result) => {
+            /** @type {firebase.auth.OAuthCredential} */
+            var credential = result.credential;
+
+            // This gives you a GitHub Access Token. You can use it to access the GitHub API.
+            var token = credential.accessToken;
+
+            // The signed-in user info.
+            var user = result.user;
+            // ...
+            console.log("깃헙 로그인됨", result);
+            console.log(credential);
+            console.log(token);
+            console.log(user);
+            window.location.replace("http://localhost:5000/index.html");
+          })
+          .catch((error) => {
+            // Handle Errors here.
+            var errorCode = error.code;
+            var errorMessage = error.message;
+            // The email of the user's account used.
+            var email = error.email;
+            // The firebase.auth.AuthCredential type that was used.
+            var credential = error.credential;
+            // ...
           });
       });
     </script>
