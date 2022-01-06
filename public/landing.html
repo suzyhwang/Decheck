@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles/css/landing.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Decheck</title>
+  </head>
+  <body>
+    <header>
+      <nav id="header_navigator">
+        <div class="header_divider logo">
+          <a href="landing.html">
+            <img src="./images/decheck_logo.svg" alt="logo" />
+          </a>
+        </div>
+        <div class="header_divider home_mypage">
+          <span class="home_button header_middle">
+            <a href="index.html"> 홈 </a>
+          </span>
+          <span class="mypage_button header_middle">
+            <a href="mypage.html"> 마이페이지 </a>
+          </span>
+        </div>
+        <div class="header_divider login_area">
+          <a class="a_hover" href="">
+            <button id="header_login_button">&nbsp</button>
+          </a>
+        </div>
+        <div class="modal hidden">
+          <div class="modal__background"></div>
+          <div class="modal__content">
+            <div class="modal_txt">정말 로그아웃 하시겠습니까?</div>
+            <div class="button_container">
+              <button id="modal_logout_button">확인</button>
+              <button id="modal_close_button">취소</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <main id="body_container">
+      <div id="background_container">
+        <svg
+          width="1920"
+          height="900"
+          viewBox="0 0 1920 900"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M0 0H1920V858L1589 564.58L1000.5 485.154L241 363.233L0 0Z"
+            fill="#DB643E"
+            fill-opacity="0.1"
+          />
+        </svg>
+      </div>
+      <div id="landing_top_container">
+        <div id="top_txt_container">
+          개발자와 컴퓨터,<br />
+          그 둘은 떼어 놓을 수 없는 사이!<br /><br />
+          내가 컴퓨터 앞에 몇시간 동안 앉아 공부하는지 궁금하시지 않나요?
+        </div>
+        <div id="top_img_container">
+          <img src="/public/images/landing1.svg" />
+        </div>
+      </div>
+      <div id="landing_button_container">
+        <button id="landing_guest_button">체험하기</button>
+        <a href="/login.html">
+          <button id="landing_login_button">로그인</button>
+        </a>
+      </div>
+      <div id="landing_bottom_container">
+        <div id="bottom_img_container">
+          <img src="/public/images/landing2.svg" />
+        </div>
+        <div id="bottom_txt_container">
+          DeCheck는 출결 기록으로 내 기록시간을<br />카톡으로 친구들에게
+          공유하며 뽐낼 수 있습니다<br /><br />오늘의 할일도 함께 적으며<br />DECHECK과
+          함께 개발 실력을 향상해보세요 !
+        </div>
+      </div>
+    </main>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="./firebase.js"></script>
+
+    <script>
+      const db = firebase.firestore();
+      let headerLoginHref = document.querySelector(".a_hover");
+      let headerLoginButton = document.querySelector("#header_login_button");
+      const openButton = document.querySelector("#header_login_button");
+      const modal = document.querySelector(".modal");
+      const closeButton = modal.querySelector("#modal_close_button");
+      const modalBackground = modal.querySelector(".modal__background");
+      const logoutButton = modal.querySelector("#modal_logout_button");
+      // 유저 관리 함수 시작
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          var uid = user.uid;
+          // ...
+          let userEmail = user.email;
+          headerLoginButton.textContent = "로그아웃";
+          headerLoginHref.href = "";
+          console.log(user, "로그인했당");
+          function displayModal(e) {
+            e.preventDefault();
+            modal.classList.toggle("hidden");
+          }
+
+          openButton.addEventListener("click", displayModal);
+          closeButton.addEventListener("click", displayModal);
+
+          logoutButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            firebase
+              .auth()
+              .signOut()
+              .then(function () {
+                console.log("로그아웃 성공");
+                headerLoginHref.href = "login.html";
+                headerLoginButton.textContent = "로그인";
+                modal.classList.add("hidden");
+                window.location.reload();
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          });
+        } else {
+          headerLoginHref.href = "login.html";
+          headerLoginButton.textContent = "로그인";
+          // User is signed out
+          // ...
+        }
+      });
+      // 유저 관리 함수 끝
+
+      // 체험하기 로그인
+      const guestButton = document.querySelector("#landing_button_container");
+
+      guestButton.addEventListener("click", (e) => {
+        e.preventDefault();
+        console.log("클릭!");
+        firebase
+          .auth()
+          .signInWithEmailAndPassword("guest@decheck.com", "Guest123!")
+          .then((userCredential) => {
+            window.location.replace("/index.html");
+          })
+          .catch((err) => {
+            console.error(err);
+          });
+      });
+    </script>
+    <footer>
+      <a
+        id="a_github"
+        href="https://github.com/suzyhwang/Decheck/wiki"
+        target="_blank"
+      >
+        <div id="github_container">
+          <img src="./images/github_icon.svg" alt="github_icon" />
+          <span id="github_name">suzyhwang</span>
+        </div>
+      </a>
+      <span id="inquiry_txt">문의하기</span>
+    </footer>
+  </body>
+</html>
