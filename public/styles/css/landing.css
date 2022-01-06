@@ -1,0 +1,423 @@
+body {
+  margin: 0;
+}
+
+:root {
+  background-color: #e5e5e5;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-1Thin.woff") format("woff");
+  font-weight: 100;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-3Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-5Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "S-CoreDream";
+  src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-7ExtraBold.woff") format("woff");
+  font-weight: 700;
+  font-style: normal;
+}
+
+* {
+  font-family: "S-CoreDream";
+}
+
+header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 100%;
+  height: 80px;
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfe), to(#fdfbfe)), #fbfbfb;
+  background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+  color: #2d2d2d;
+  border-bottom: 1px solid #e0dde1;
+}
+
+#header_navigator {
+  width: 1260px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.header_divider {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.logo {
+  cursor: pointer;
+}
+
+.home_mypage {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  font-size: 16px;
+  font-weight: 300;
+}
+
+#header_login_button {
+  width: 94px;
+  height: 36px;
+  border-style: none;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  color: #ffffff;
+  background: #db643e;
+}
+
+#header_login_button:active {
+  background: #ec6d43;
+}
+
+.login_area {
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: end;
+}
+
+.header_middle {
+  width: 80px;
+  cursor: pointer;
+}
+
+.header_middle:hover {
+  color: #db643e;
+}
+
+.home_button {
+  text-align: left;
+  margin-left: 20px;
+}
+
+.mypage_button {
+  text-align: left;
+  margin-left: 20px;
+}
+
+a {
+  text-decoration: none;
+  color: #2d2d2d;
+}
+
+a:visited {
+  color: #2d2d2d;
+}
+
+a:hover {
+  color: #db643e;
+}
+
+.modal {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999;
+}
+
+.modal__background {
+  background-color: rgba(0, 0, 0, 0.6);
+  width: 100%;
+  height: 100%;
+  position: absolute;
+}
+
+.modal__content {
+  text-align: center;
+  position: relative;
+  width: 468px;
+  height: 237px;
+  background: #fbfafc;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#modal_logout_button {
+  border-style: none;
+  background: #db643e;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  color: #ffffff;
+  width: 94px;
+  height: 36px;
+  cursor: pointer;
+}
+
+#modal_logout_button:active {
+  background: #ec6d43;
+}
+
+#modal_close_button {
+  width: 94px;
+  height: 36px;
+  font-weight: 300;
+  font-size: 16px;
+  line-height: 24px;
+  background: #ffffff;
+  color: #2d2d2d;
+  border: 1px solid #2d2d2d;
+  cursor: pointer;
+}
+
+#modal_close_button:active {
+  background: #f2f2f2;
+}
+
+.hidden {
+  display: none;
+}
+
+.modal_txt {
+  margin-top: 50px;
+}
+
+.button_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  width: 216px;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+footer {
+  width: 100%;
+  height: 130px;
+  background: -webkit-gradient(linear, left bottom, left top, from(#fdfbfe), to(#fdfbfe)), #fbfbfb;
+  background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  border-top: 1px solid #e0dde1;
+}
+
+#github_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 120px;
+  margin-right: 60px;
+  cursor: pointer;
+}
+
+#inquiry_txt {
+  width: 120px;
+  cursor: pointer;
+}
+
+#a_github {
+  text-decoration: none;
+}
+
+#a_github:visited {
+  color: #2d2d2d;
+}
+
+#body_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  min-height: 98vh;
+  background: #fbfbfb;
+}
+
+#background_container {
+  position: absolute;
+  top: 80px;
+  z-index: 0;
+}
+
+#landing_top_container {
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  z-index: 1;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 25px;
+  color: #222222;
+}
+
+#bottom_txt_container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 130px 120px 0 0;
+}
+
+#landing_bottom_container {
+  width: 100%;
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  z-index: 1;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  text-align: right;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 25px;
+  color: #222222;
+}
+
+#landing_button_container {
+  width: 281px;
+  margin-top: 100px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+#landing_guest_button {
+  position: relative;
+  width: 125.33px;
+  height: 48px;
+  background: #db643e;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 24px;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1;
+}
+
+#landing_guest_button:active {
+  background: #ec6d43;
+}
+
+#landing_login_button {
+  position: relative;
+  width: 125.33px;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #db643e;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 24px;
+  color: #db643e;
+  cursor: pointer;
+  z-index: 1;
+}
+
+#landing_login_button:active {
+  background: #f5f5f594;
+}

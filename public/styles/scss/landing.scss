@@ -1,0 +1,94 @@
+@import "./body";
+@import "./font";
+@import "./header";
+@import "./footer";
+
+@mixin flexCenter($flex-direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $flex-direction;
+}
+
+#body_container {
+  @include flexCenter(column);
+  min-height: 98vh;
+  background: #fbfbfb;
+}
+
+#background_container {
+  position: absolute;
+  top: 80px;
+  z-index: 0;
+}
+
+#landing_top_container {
+  width: 100%;
+  position: relative;
+  @include flexCenter(row);
+  z-index: 1;
+  justify-content: space-evenly;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 25px;
+  color: #222222;
+}
+
+#bottom_txt_container {
+  display: flex;
+  margin: 130px 120px 0 0;
+}
+
+#landing_bottom_container {
+  width: 100%;
+  position: relative;
+  @include flexCenter(row);
+  z-index: 1;
+  justify-content: space-evenly;
+  text-align: right;
+  font-weight: 300;
+  font-size: 24px;
+  line-height: 25px;
+  color: #222222;
+}
+
+#landing_button_container {
+  width: 281px;
+  margin-top: 100px;
+  display: flex;
+  justify-content: space-between;
+}
+
+#landing_guest_button {
+  position: relative;
+  width: 125.33px;
+  height: 48px;
+  background: #db643e;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 24px;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  z-index: 1;
+  &:active {
+    background: #ec6d43;
+  }
+}
+
+#landing_login_button {
+  position: relative;
+  width: 125.33px;
+  height: 48px;
+  background: #ffffff;
+  border: 1px solid #db643e;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 24px;
+  color: #db643e;
+  cursor: pointer;
+  z-index: 1;
+  &:active {
+    background: #f5f5f594;
+  }
+}

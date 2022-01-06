@@ -1,0 +1,16 @@
+@import "./body";
+@import "./font";
+@import "./header";
+@import "./footer";
+
+@mixin flexCenter($flex-direction) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: $flex-direction;
+}
+
+#body_container {
+  @include flexCenter(column);
+  min-height: 98vh;
+}
