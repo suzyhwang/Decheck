@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="login.css" />
+    <link rel="stylesheet" href="styles/css/login.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <title>Decheck</title>
     <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
@@ -19,13 +19,17 @@
     <header>
       <nav id="header_navigator">
         <div class="header_divider logo">
-          <img src="./decheck_logo.svg" alt="logo" />
+          <a href="landing.html">
+            <img src="./images/decheck_logo.svg" alt="logo" />
+          </a>
         </div>
         <div class="header_divider home_mypage">
           <span class="home_button header_middle">
             <a href="index.html"> 홈 </a>
           </span>
-          <span class="mypage_button header_middle">마이페이지</span>
+          <span class="mypage_button header_middle">
+            <a href="mypage.html"> 마이페이지 </a>
+          </span>
         </div>
         <div class="header_divider login_area">
           <a class="a_hover" href="login.html">
@@ -52,20 +56,24 @@
           <label for="userPassword">비밀번호</label>
           <input type="password" name="userPassword" required />
           <div id="warning_msg">
-            <img src="warning_icon.svg" alt="warning_icon" />
+            <img src="./images/warning_icon.svg" alt="warning_icon" />
             <span> 이메일과 비밀번호를 확인해 주세요. </span>
           </div>
-          <button class="login_button" type="submit">로그인</button>
+          <button class="login_button button" type="submit">로그인</button>
         </form>
-        <button id="github_login_button">
-          <img id="github_login_icon" src="github_icon.svg" alt="github_icon" />
+        <button id="github_login_button" class="button">
+          <img
+            id="github_login_icon"
+            src="./images/github_icon.svg"
+            alt="github_icon"
+          />
           깃허브 로그인
         </button>
 
-        <button id="kakao_login_button">
+        <button id="kakao_login_button" class="button">
           <img
             id="kakao_login_icon"
-            src="kakao_icon.svg"
+            src="./images/kakao_icon.svg"
             alt="kakao_icon"
           />카카오 로그인
         </button>
@@ -78,7 +86,7 @@
     <footer>
       <a href="https://github.com/suzyhwang/Decheck/wiki" target="_blank">
         <div id="github_container">
-          <img src="github_icon.svg" alt="github_icon" />
+          <img src="./images/github_icon.svg" alt="github_icon" />
           <span id="github_name">suzyhwang</span>
         </div>
       </a>
@@ -86,6 +94,7 @@
     </footer>
 
     <script>
+      let db = firebase.firestore();
       const warningMsg = document.querySelector("#warning_msg");
       // 일반 로그인 시작
       const loginForm = document.querySelector("#loginForm");
@@ -100,8 +109,7 @@
           .then((userCredential) => {
             loginForm.reset();
             warningMsg.style.visibility = "hidden";
-            console.log("로그인됨", userCredential);
-            window.location.replace("http://localhost:5000/index.html");
+            window.location.replace("/index.html");
           })
           .catch((err) => {
             warningMsg.style.visibility = "visible";
@@ -158,6 +166,7 @@
               token: kakao_access_token,
             };
             let req = new XMLHttpRequest();
+
             // 서버로 post 요청 보내서 response로 firebaseToken 받기
             const tokenurl = "http://localhost:8000/verifyToken";
             req.open("POST", tokenurl);
@@ -175,15 +184,70 @@
                   .signInWithCustomToken(success_kakao_token)
                   .then((userCredential) => {
                     // Signed in
+
                     let user = userCredential.user;
-                    // ...
-                    window.location.replace("http://localhost:5000/index.html");
-                    console.log("카카오 로그인 성공");
+                    let uid = user.uid;
+                    let nickname = user.displayName;
+
+                    db.collection("users")
+                      .doc(uid)
+                      .update({
+                        social: true,
+                      })
+                      .then(() => {
+                        db.collection("users")
+                          .doc(uid)
+                          .collection("today")
+                          .doc("today")
+                          .set({
+                            color: "#edb4a3",
+                          })
+                          .then(() => {
+                            console.log("Document successfully written!");
+                            console.log("2요기");
+                            window.location.replace("/index.html");
+                          })
+                          .catch((error) => {
+                            console.error("Error writing document: ", error);
+                          });
+                      })
+                      .catch((error) => {
+                        console.error("Error writing document: ", error);
+                        db.collection("users")
+                          .doc(uid)
+                          .set({
+                            nickname,
+                            uid,
+                            social: true,
+                          })
+                          .then(() => {
+                            db.collection("users")
+                              .doc(uid)
+                              .collection("today")
+                              .doc("today")
+                              .set({
+                                color: "#edb4a3",
+                              })
+                              .then(() => {
+                                console.log("Document successfully written!");
+                                console.log("없으면 요기");
+                                window.location.replace("/index.html");
+                              })
+                              .catch((error) => {
+                                console.error(
+                                  "Error writing document: ",
+                                  error
+                                );
+                              });
+                          });
+                      });
                   })
                   .catch((error) => {
                     let errorCode = error.code;
                     let errorMessage = error.message;
                     // ...
+                    console.log(errorCode, "에러코드");
+                    console.log(errorMessage, "에러메세지");
                   });
               } else {
                 console.error(req);
@@ -217,11 +281,59 @@
             // The signed-in user info.
             var user = result.user;
             // ...
-            console.log("깃헙 로그인됨", result);
-            console.log(credential);
-            console.log(token);
-            console.log(user);
-            window.location.replace("http://localhost:5000/index.html");
+
+            let uid = user.uid;
+            let nickname = user.displayName;
+
+            db.collection("users")
+              .doc(uid)
+              .update({
+                social: true,
+              })
+              .then(() => {
+                db.collection("users")
+                  .doc(uid)
+                  .collection("today")
+                  .doc("today")
+                  .set({
+                    color: "#edb4a3",
+                  })
+                  .then(() => {
+                    console.log("Document successfully written!");
+                    console.log("2요기");
+                    window.location.replace("/index.html");
+                  })
+                  .catch((error) => {
+                    console.error("Error writing document: ", error);
+                  });
+              })
+              .catch((error) => {
+                console.error("Error writing document: ", error);
+                db.collection("users")
+                  .doc(uid)
+                  .set({
+                    nickname,
+                    uid,
+                    social: true,
+                  })
+                  .then(() => {
+                    db.collection("users")
+                      .doc(uid)
+                      .collection("today")
+                      .doc("today")
+                      .set({
+                        color: "#edb4a3",
+                      })
+                      .then(() => {
+                        console.log("Document successfully written!");
+                        console.log("없으면 요기");
+                        window.location.replace("/index.html");
+                      })
+                      .catch((error) => {
+                        console.error("Error writing document: ", error);
+                      });
+                  });
+              });
           })
           .catch((error) => {
             // Handle Errors here.
@@ -232,6 +344,7 @@
             // The firebase.auth.AuthCredential type that was used.
             var credential = error.credential;
             // ...
+            console.log("요기");
           });
       });
     </script>
