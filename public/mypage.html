@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./styles/css/mypage.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
+    <title>Decheck</title>
+  </head>
+  <body>
+    <header>
+      <nav id="header_navigator">
+        <div class="header_divider logo">
+          <a href="landing.html">
+            <img src="./images/decheck_logo.svg" alt="logo" />
+          </a>
+        </div>
+        <div class="header_divider home_mypage">
+          <span class="home_button header_middle">
+            <a href="index.html"> 홈 </a>
+          </span>
+          <span class="mypage_button header_middle">
+            <a href="mypage.html"> 마이페이지 </a>
+          </span>
+        </div>
+        <div class="header_divider login_area">
+          <a class="a_hover" href="">
+            <button id="header_login_button">&nbsp</button>
+          </a>
+        </div>
+        <div class="modal hidden">
+          <div class="modal__background"></div>
+          <div class="modal__content">
+            <div class="modal_txt">정말 로그아웃 하시겠습니까?</div>
+            <div class="button_container">
+              <button id="modal_logout_button">확인</button>
+              <button id="modal_close_button">취소</button>
+            </div>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div id="body_container">
+      <div id="mypage_top_container">
+        <div id="m_left_container" class="m_top_container">
+          <div id="info_container">
+            <span class="name_txt">&nbsp;</span>
+            <div class="email_txt">&nbsp;</div>
+            <div>오늘의 기록을 Decheck와 함께 남겨보세요</div>
+          </div>
+          <div id="m_left_button_container">
+            <button id="info_edit" class="white_btn">정보 수정</button>
+            <button id="delete_account" class="white_btn">회원 탈퇴</button>
+            <div class="newmodal hidden">
+              <div class="modal__background"></div>
+              <div class="modal__content">
+                <div class="modal_txt">정말 탈퇴 하시겠습니까?</div>
+                <div class="button_container">
+                  <button id="modal_delete_account_button">확인</button>
+                  <button id="modal_delete_close_button">취소</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="m_right_container" class="m_top_container">
+          <div id="m_today_record">
+            <img src="./images/check.svg" />
+            오늘의 총 기록 시간은&nbsp;<span>0분</span>&nbsp;입니다
+          </div>
+          <div id="m_right_button_container">
+            <button id="today_sentence_edit" class="no_border_btn">
+              오늘의 한마디
+            </button>
+            <button id="graph_btn" class="no_border_btn">
+              이번 달 그래프 보기
+            </button>
+          </div>
+        </div>
+      </div>
+      <div id="mypage_bottom_container">
+        <div id="m_default_page">
+          <div>
+            마이페이지에서는<br />
+            정보 수정 및 회원 탈퇴,<br />
+            오늘의 한마디, 이번 달 그래프 보기가 가능합니다.<br />
+            상단의 버튼들을 클릭해 이용해 보세요!
+          </div>
+          <div id="m_image_container">
+            <img src="./images/mypage_img.svg" alt="mypage_default_img" />
+          </div>
+        </div>
+        <div id="info_edit_page">
+          <div class="m_title">회원 정보 수정</div>
+          <div id="info_buttons">
+            <button id="nickname_edit_btn">닉네임 변경하기</button>
+            <button id="password_edit_btn">비밀번호 변경하기</button>
+          </div>
+          <div id="nickname_edit_page">
+            <div class="input_container">
+              <label>닉네임</label>
+              <input
+                id="nickname_edit_input"
+                type="text"
+                maxlength="10"
+                placeholder="2글자 이상, 10글자 이내로 작성해주세요"
+              />
+            </div>
+            <div class="m_button_container">
+              <button id="submit_nickname_edit" class="orange_button">
+                변경
+              </button>
+              <button id="cancel_nickname_edit" class="white_button">
+                취소
+              </button>
+            </div>
+          </div>
+          <div id="password_edit_page">
+            <div class="input_container">
+              <label>비밀번호</label>
+              <input type="password" />
+              <label>비밀번호 확인</label>
+              <input type="password" />
+            </div>
+            <div class="m_button_container">
+              <button id="submit_password_edit" class="orange_button">
+                변경
+              </button>
+              <button id="cancel_password_edit" class="white_button">
+                취소
+              </button>
+            </div>
+          </div>
+        </div>
+        <div id="today_sentence_page">
+          <div class="m_title">오늘의 한마디</div>
+          <img src="./images/today_sentence_img.svg" alt="today_sentence_img" />
+          <div id="today_sentence_input_container">
+            <div id="input_only_container">
+              <input id="today_input" type="text" maxlength="35" />
+              <img id="today_input_cancel" src="images/x.svg" />
+            </div>
+            <span>오늘의 한마디는 35글자까지 작성할 수 있습니다. </span>
+          </div>
+          <div class="m_button_container">
+            <button id="submit_today_sentence" class="orange_button">
+              변경
+            </button>
+            <button id="cancel_today_sentence" class="white_button">
+              취소
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
+
+    <script src="./firebase.js"></script>
+
+    <script>
+      const db = firebase.firestore();
+      let headerLoginHref = document.querySelector(".a_hover");
+      let headerLoginButton = document.querySelector("#header_login_button");
+      const openButton = document.querySelector("#header_login_button");
+      const openDeleteAccountButton = document.querySelector("#delete_account");
+      const modal = document.querySelector(".modal");
+      const newmodal = document.querySelector(".newmodal");
+      const closeButton = modal.querySelector("#modal_close_button");
+      const modalBackground = modal.querySelector(".modal__background");
+      const logoutButton = modal.querySelector("#modal_logout_button");
+      const deleteButton = newmodal.querySelector(
+        "#modal_delete_account_button"
+      );
+      const cancelButton = newmodal.querySelector("#modal_delete_close_button");
+      const userName = document.querySelector(".name_txt");
+      const userEmail = document.querySelector(".email_txt");
+      // 유저 관리 함수 시작
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          // User is signed in, see docs for a list of available properties
+          // https://firebase.google.com/docs/reference/js/firebase.User
+          var uid = user.uid;
+          // 유저 정보 표시하기
+
+          userEmail.textContent = user.email;
+
+          let userDB = db.collection("users").doc(uid);
+
+          // 닉네임 불러오기
+          userDB.get().then((res) => {
+            if (res.data()) {
+              userName.textContent = `${res.data().nickname} 님`;
+            }
+          });
+
+          const todayDate = `${new Date().getFullYear()} ${
+            new Date().getMonth() + 1
+          } ${new Date().getDate()}`;
+          // 시간 불러오기
+          const userTime =
+            document.querySelector("#m_today_record").children[1];
+
+          userDB
+            .collection("timeRecord")
+            .doc(todayDate)
+            .get()
+            .then((res) => {
+              if (res.data()) {
+                let timeToMin = res.data().resultTime.length * 10;
+                if (timeToMin < 60) {
+                  userTime.textContent = `${timeToMin}분`;
+                } else if (timeToMin >= 60 && timeToMin % 60 !== 0) {
+                  userTime.textContent = `${(timeToMin / 60).toFixed(0)}시간 ${
+                    timeToMin % 60
+                  }분`;
+                } else {
+                  userTime.textContent = `${(timeToMin / 60).toFixed(0)}시간`;
+                }
+              }
+            });
+
+          // 페이지 불러오기
+          const defaultPage = document.querySelector("#m_default_page");
+          const infoEditPage = document.querySelector("#info_edit_page");
+          const todaySentencePage = document.querySelector(
+            "#today_sentence_page"
+          );
+          const passwordEditPage = document.querySelector(
+            "#password_edit_page"
+          );
+          const nicknameEditPage = document.querySelector(
+            "#nickname_edit_page"
+          );
+          // 버튼 불러오기
+          const infoEditBtn = document.querySelector("#info_edit");
+          const deleteAccBtn = document.querySelector("#delete_account");
+          const todaySentenceBtn = document.querySelector(
+            "#today_sentence_edit"
+          );
+          const graphBtn = document.querySelector("#graph_btn");
+          const cancelBtn = document.querySelectorAll(".white_button");
+          const todayTxt = document.querySelector("#today_input");
+          const todayCancelBtn = document.querySelector("#today_input_cancel");
+          const todaySubmitBtn = document.querySelector(
+            "#submit_today_sentence"
+          );
+          const nicknameEditBtn = document.querySelector("#nickname_edit_btn");
+          const passwordEditBtn = document.querySelector("#password_edit_btn");
+          const infoButtons = document.querySelector("#info_buttons");
+          const submitNicknameEditBtn = document.querySelector(
+            "#submit_nickname_edit"
+          );
+          const submitPasswordEditBtn = document.querySelector(
+            "#submit_password_edit"
+          );
+          const nicknameTxt = document.querySelector("#nickname_edit_input");
+          submitNicknameEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            if (nicknameTxt.value.length >= 2) {
+              userDB
+                .update({
+                  nickname: nicknameTxt.value,
+                })
+                .then(() => {
+                  console.log("Document successfully written! 업데이트");
+                  window.location.reload();
+                });
+            }
+          });
+
+          // 비밀번호 유효성 검사 함수
+          function Inspect(data, type) {
+            switch (type) {
+              case "nickname":
+                const nickname = /^([a-zA-Z0-9가-힣]){2,10}$/;
+                // 2~10글자, 영어, 한글, 숫자만 가능
+                return nickname.test(data);
+              case "email":
+                const email =
+                  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/;
+                return email.test(data);
+              case "password":
+                const password =
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&]{8,16}/;
+                //최소 8자 및 최대 16자, 대문자 하나 이상, 소문자 하나 이상, 숫자 하나 이상, 특수 문자 하나 이상
+                return password.test(data);
+              default:
+                return false;
+            }
+          }
+
+          nicknameEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            infoButtons.style.display = "none";
+            nicknameEditPage.style.display = "block";
+          });
+
+          passwordEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+
+            infoButtons.style.display = "none";
+            passwordEditPage.style.display = "block";
+          });
+
+          // 버튼 마다 이벤트 동작
+          infoEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            defaultPage.style.display = "none";
+            infoEditPage.style.display = "flex";
+            todaySentencePage.style.display = "none";
+          });
+
+          todaySentenceBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            defaultPage.style.display = "none";
+            infoEditPage.style.display = "none";
+            todaySentencePage.style.display = "flex";
+          });
+
+          console.log(cancelBtn, "SDFASGSD");
+          cancelBtn.forEach((el) => {
+            el.addEventListener("click", (e) => {
+              e.preventDefault();
+              defaultPage.style.display = "flex";
+              infoEditPage.style.display = "none";
+              todaySentencePage.style.display = "none";
+              infoButtons.style.display = "flex";
+              nicknameEditPage.style.display = "none";
+              passwordEditPage.style.display = "none";
+            });
+          });
+
+          // 오늘의 한마디
+          todaySubmitBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            userDB
+              .collection("today")
+              .doc("today")
+              .set({
+                title: todayTxt.value,
+              })
+              .then((res) => {
+                defaultPage.style.display = "flex";
+                infoEditPage.style.display = "none";
+                todaySentencePage.style.display = "none";
+              });
+          });
+
+          todayCancelBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            todayTxt.value = "";
+          });
+
+          headerLoginButton.textContent = "로그아웃";
+          headerLoginHref.href = "";
+          console.log(user, "로그인했당");
+
+          function displayModal(e) {
+            e.preventDefault();
+            modal.classList.toggle("hidden");
+          }
+
+          function newdisplayModal(e) {
+            e.preventDefault();
+            newmodal.classList.toggle("hidden");
+          }
+
+          cancelButton.addEventListener("click", newdisplayModal);
+          openDeleteAccountButton.addEventListener("click", newdisplayModal);
+          openButton.addEventListener("click", displayModal);
+          closeButton.addEventListener("click", displayModal);
+
+          logoutButton.addEventListener("click", (e) => {
+            e.preventDefault();
+            firebase
+              .auth()
+              .signOut()
+              .then(function () {
+                console.log("로그아웃 성공");
+                headerLoginHref.href = "login.html";
+                headerLoginButton.textContent = "로그인";
+                modal.classList.add("hidden");
+                window.location.reload();
+              })
+              .catch(function (error) {
+                console.log(error);
+              });
+          });
+        } else {
+          headerLoginHref.href = "login.html";
+          headerLoginButton.textContent = "로그인";
+          // User is signed out
+          // ...
+          userName.textContent = `마이페이지는`;
+          userEmail.textContent = `체험하기 및 로그인 하시면 이용 가능한 서비스입니다.`;
+        }
+      });
+      // 유저 관리 함수 끝
+    </script>
+    <footer>
+      <a
+        id="a_github"
+        href="https://github.com/suzyhwang/Decheck/wiki"
+        target="_blank"
+      >
+        <div id="github_container">
+          <img src="./images/github_icon.svg" alt="github_icon" />
+          <span id="github_name">suzyhwang</span>
+        </div>
+      </a>
+      <span id="inquiry_txt">문의하기</span>
+    </footer>
+  </body>
+</html>
