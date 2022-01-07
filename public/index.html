@@ -6,6 +6,14 @@
     <link rel="stylesheet" href="styles/css/index.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <title>Decheck</title>
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <script>
+      // SDK를 초기화 합니다. 사용할 앱의 JavaScript 키를 설정해 주세요.
+      Kakao.init("91566c603566ac0a1b3c5959e0c58d24");
+
+      // SDK 초기화 여부를 판단합니다.
+      console.log(Kakao.isInitialized());
+    </script>
   </head>
   <body>
     <header>
@@ -83,6 +91,7 @@
                   <path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"></path>
                 </svg>
               </div>
+
               <div id="todo_input_container">
                 <div id="todo_c">
                   <input
@@ -95,6 +104,10 @@
                 </div>
                 <button id="todo_submit" class="small org_btn">입력</button>
               </div>
+            </div>
+            <div id="todo_nothing">
+              아직 작성한 오늘의 할일이 없습니다<br />
+              + 아이콘을 눌러 오늘의 할일을 입력해보세요 !
             </div>
             <div id="todo_list">
               <ul></ul>
@@ -117,10 +130,9 @@
           <div id="today_record_container">
             <div id="today_record_top">
               오늘의 기록
-
               <div id="timer">
                 <img src="./images/clock.svg" />
-                5시간 30분
+                <span id="time_txt"></span>
               </div>
             </div>
             <div id="today_record_graph">
@@ -139,8 +151,9 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
 
     <script src="./firebase.js"></script>
-    <!-- <script src="https://cdn.rawgit.com/tsayen/dom-to-image/bfc00a6c5bba731027820199acd7b0a6e92149d8/dist/dom-to-image.min.js"></script>
-    <script type="text/javascript">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
+
+    <!--  <script type="text/javascript">
       function sendLink() {
         Kakao.Link.sendDefault({
           objectType: "feed",
@@ -193,6 +206,10 @@
       const todoCancelButton = document.querySelector("#todo_c").children[1];
       const todoSubmitButton = document.querySelector("#todo_submit");
       const todoCheck = document.querySelector(".test");
+      const todaySentence = document.querySelector(".today_sentence");
+      const todoNothing = document.querySelector("#todo_nothing");
+      const colorPick = document.querySelector("#color_pick");
+
       var startRecordHour;
       var startRecordMin;
       var startRecordDay;
@@ -200,7 +217,7 @@
       var endRecordMin;
       var endRecordDay;
       var recordState = true;
-
+      const timeTxt = document.querySelector("#time_txt");
       // 첫번째 테이블 만들기
       const firstColumn = document.querySelector("#table_first_column");
       for (let i = 6; i < 30; i++) {
@@ -279,21 +296,40 @@
               .doc(todayDate)
               .get()
               .then((res) => {
-                console.log(res.data());
                 if (res.data()) {
                   resultTime = res.data().resultTime;
                 }
                 // 테이블 색 채우기
-                const colorPick = document.querySelector("#color_pick");
-                colorPick.value = "#edb4a3";
+
                 colorPick.addEventListener("change", (e) => {
                   console.log(e.target.value, "@@");
                   for (let i = 0; i < resultTime.length; i++) {
                     checkTime(resultTime[i] - 1, e.target.value);
                   }
+                  db.collection("users")
+                    .doc(uid)
+                    .collection("today")
+                    .doc("today")
+                    .update({
+                      color: e.target.value,
+                    })
+                    .then(() => {
+                      console.log("색깔 업데이트");
+                    })
+                    .catch((err) => console.error(err));
                 });
-                for (let i = 0; i < resultTime.length; i++) {
-                  checkTime(resultTime[i] - 1, "#edb4a3");
+
+                if (resultTime) {
+                  let timeToMin = resultTime.length * 10;
+                  if (timeToMin < 60) {
+                    timeTxt.textContent = `${timeToMin}분`;
+                  } else if (timeToMin >= 60 && timeToMin % 60 !== 0) {
+                    timeTxt.textContent = `${(timeToMin / 60).toFixed(0)}시간 ${
+                      timeToMin % 60
+                    }분`;
+                  } else {
+                    timeTxt.textContent = `${(timeToMin / 60).toFixed(0)}시간`;
+                  }
                 }
               })
               .then(() => {
@@ -321,15 +357,40 @@
                         }
                         // 테이블 색 채우기
 
-                        colorPick.value = "#edb4a3";
+                        // colorPick.value = "#edb4a3";
                         colorPick.addEventListener("change", (e) => {
                           console.log(e.target.value, "@@");
                           for (let i = 0; i < resultTime.length; i++) {
                             checkTime(resultTime[i] - 1, e.target.value);
                           }
+                          db.collection("users")
+                            .doc(uid)
+                            .collection("today")
+                            .doc("today")
+                            .update({
+                              color: e.target.value,
+                            })
+                            .then(() => {
+                              console.log("색깔 업데이트");
+                            })
+                            .catch((err) => console.error(err));
                         });
                         for (let i = 0; i < resultTime.length; i++) {
-                          checkTime(resultTime[i] - 1, "#edb4a3");
+                          checkTime(resultTime[i] - 1, colorPick.value);
+                        }
+                        if (resultTime) {
+                          let timeToMin = resultTime.length * 10;
+                          if (timeToMin < 60) {
+                            timeTxt.textContent = `${timeToMin}분`;
+                          } else if (timeToMin >= 60 && timeToMin % 60 !== 0) {
+                            timeTxt.textContent = `${(timeToMin / 60).toFixed(
+                              0
+                            )}시간 ${timeToMin % 60}분`;
+                          } else {
+                            timeTxt.textContent = `${(timeToMin / 60).toFixed(
+                              0
+                            )}시간`;
+                          }
                         }
                       });
                   })
@@ -351,10 +412,10 @@
         }
       }
 
-      function checkTime(time, color) {
+      function checkTime(time, color = colorPick.value) {
         test_row[time].style.background = `${color}`;
       }
-      const colorPick = document.querySelector("#color_pick");
+
       // 시간 보여주는 함수
       function showTime() {
         var date = new Date();
@@ -419,6 +480,25 @@
           headerLoginButton.textContent = "로그아웃";
           headerLoginHref.href = "";
           console.log(user, "로그인했당");
+          // 오늘의 한마디 db에서 가져오기
+          db.collection("users")
+            .doc(uid)
+            .collection("today")
+            .get()
+            .then((res) => {
+              res.forEach((doc) => {
+                if (doc.data().title) {
+                  todaySentence.textContent = `${doc.data().title}`;
+                } else {
+                  todaySentence.textContent =
+                    "마이페이지에서 오늘의 한마디를 작성해보세요.";
+                }
+                if (doc.data().color) {
+                  colorPick.value = doc.data().color;
+                }
+              });
+            });
+
           db.collection("users")
             .doc(uid)
             .collection("timeRecord")
@@ -429,16 +509,40 @@
                 resultTime = res.data().resultTime;
               }
               // 테이블 색 채우기
-              const colorPick = document.querySelector("#color_pick");
-              colorPick.value = "#edb4a3";
+
+              // colorPick.value = "#edb4a3";
               colorPick.addEventListener("change", (e) => {
                 console.log(e.target.value, "@@");
                 for (let i = 0; i < resultTime.length; i++) {
                   checkTime(resultTime[i] - 1, e.target.value);
                 }
+                db.collection("users")
+                  .doc(uid)
+                  .collection("today")
+                  .doc("today")
+                  .update({
+                    color: e.target.value,
+                  })
+                  .then(() => {
+                    console.log("색깔 업데이트");
+                  })
+                  .catch((err) => console.error(err));
               });
+
               for (let i = 0; i < resultTime.length; i++) {
-                checkTime(resultTime[i] - 1, "#edb4a3");
+                checkTime(resultTime[i] - 1, colorPick.value);
+              }
+              if (resultTime) {
+                let timeToMin = resultTime.length * 10;
+                if (timeToMin < 60) {
+                  timeTxt.textContent = `${timeToMin}분`;
+                } else if (timeToMin >= 60 && timeToMin % 60 !== 0) {
+                  timeTxt.textContent = `${(timeToMin / 60).toFixed(0)}시간 ${
+                    timeToMin % 60
+                  }분`;
+                } else {
+                  timeTxt.textContent = `${(timeToMin / 60).toFixed(0)}시간`;
+                }
               }
             })
             .catch((err) => console.error(err));
@@ -481,23 +585,6 @@
             console.log("클릭!");
           });
 
-          // 오늘의 한마디 db에서 가져오기
-          db.collection("users")
-            .doc(uid)
-            .collection("today")
-            .get()
-            .then((res) => {
-              res.forEach((doc) => {
-                if (doc.data()) {
-                  const todaySentence =
-                    document.querySelector(".today_sentence");
-                  todaySentence.textContent = `${doc.data().title}`;
-                } else {
-                  todaySentence.textContent =
-                    "마이페이지에서 오늘의 한마디를 작성해보세요.";
-                }
-              });
-            });
           // db 안에 있는 투두 가져오기
           db.collection("users")
             .doc(uid)
@@ -507,6 +594,8 @@
               let i = 0;
               res.forEach((doc) => {
                 if (doc.data()) {
+                  console.log(doc.data());
+                  todoNothing.style.display = "none";
                   const ul = document.querySelector("ul");
                   let li = document.createElement("li");
                   let checkbox = document.createElement("input");
@@ -636,12 +725,19 @@
                   });
                 }
               });
+              const todoTracker = document.querySelectorAll(".cb_update");
+
+              if (todoTracker.length === 0) {
+                todoNothing.style.display = "flex";
+              }
             });
         } else {
           headerLoginHref.href = "login.html";
           headerLoginButton.textContent = "로그인";
           // User is signed out
           // ...
+          todaySentence.textContent = `체험하기 및 로그인 하시면 이용 가능한 서비스입니다.`;
+          todoNothing.style.display = "flex";
         }
 
         todoSubmitButton.addEventListener("click", (e) => {
@@ -688,7 +784,29 @@
           .then(function (dataUrl) {
             var img = new Image();
             img.src = dataUrl;
-            console.log(img);
+
+            console.log(img.src);
+            // Kakao.Link.sendDefault({
+            //   objectType: "feed",
+            //   content: {
+            //     title: "오늘의 기록",
+            //     imageUrl: dataUrl,
+            //     link: {
+            //       mobileWebUrl: "http://localhost:5000/",
+            //       webUrl: "http://localhost:5000/",
+            //     },
+            //   },
+
+            //   buttons: [
+            //     {
+            //       title: "나도 기록하러 가기",
+            //       link: {
+            //         mobileWebUrl: "http://localhost:5000/",
+            //         webUrl: "http://localhost:5000/",
+            //       },
+            //     },
+            //   ],
+            // });
           })
           .catch(function (error) {
             console.error("oops, something went wrong!", error);

@@ -330,8 +330,10 @@ input:checked:focus + .switch-left + .switch-right {
   border-bottom: 3px solid #e0dde1;
 }
 #timer {
+  width: 100px;
   display: flex;
   flex-direction: row;
+  justify-content: space-evenly;
   align-items: center;
   font-weight: 500;
   font-size: 14px;
@@ -339,6 +341,10 @@ input:checked:focus + .switch-left + .switch-right {
   color: #7a7a7a;
   img {
     vertical-align: text-bottom;
+  }
+  span {
+    width: 71px;
+    text-align: right;
   }
 }
 
@@ -488,4 +494,19 @@ input[type="checkbox"] {
   img {
     vertical-align: middle;
   }
+}
+
+#todo_nothing {
+  @include flexCenter(row);
+
+  margin-top: 10px;
+  width: 498px;
+  height: 210px;
+  border: 2px solid #e0dde1;
+  font-weight: 300;
+  font-size: 18px;
+  line-height: 40px;
+  text-align: center;
+  color: #8b8b8b;
+  display: none;
 }
