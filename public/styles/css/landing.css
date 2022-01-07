@@ -336,7 +336,7 @@ footer {
       -ms-flex-pack: space-evenly;
           justify-content: space-evenly;
   font-weight: 300;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 25px;
   color: #222222;
 }
@@ -370,7 +370,7 @@ footer {
           justify-content: space-evenly;
   text-align: right;
   font-weight: 300;
-  font-size: 24px;
+  font-size: 20px;
   line-height: 25px;
   color: #222222;
 }

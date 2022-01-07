@@ -63,7 +63,7 @@
           내가 컴퓨터 앞에 몇시간 동안 앉아 공부하는지 궁금하시지 않나요?
         </div>
         <div id="top_img_container">
-          <img src="/public/images/landing1.svg" />
+          <img src="/images/landing1.svg" />
         </div>
       </div>
       <div id="landing_button_container">
@@ -74,7 +74,7 @@
       </div>
       <div id="landing_bottom_container">
         <div id="bottom_img_container">
-          <img src="/public/images/landing2.svg" />
+          <img src="/images/landing2.svg" />
         </div>
         <div id="bottom_txt_container">
           DeCheck는 출결 기록으로 내 기록시간을<br />카톡으로 친구들에게
@@ -95,6 +95,9 @@
       let headerLoginHref = document.querySelector(".a_hover");
       let headerLoginButton = document.querySelector("#header_login_button");
       const openButton = document.querySelector("#header_login_button");
+      const landingLoginButton = document.querySelector(
+        "#landing_login_button"
+      );
       const modal = document.querySelector(".modal");
       const closeButton = modal.querySelector("#modal_close_button");
       const modalBackground = modal.querySelector(".modal__background");
@@ -107,6 +110,9 @@
           var uid = user.uid;
           // ...
           let userEmail = user.email;
+
+          landingLoginButton.textContent = "메인으로 가기";
+
           headerLoginButton.textContent = "로그아웃";
           headerLoginHref.href = "";
           console.log(user, "로그인했당");
@@ -144,7 +150,7 @@
       // 유저 관리 함수 끝
 
       // 체험하기 로그인
-      const guestButton = document.querySelector("#landing_button_container");
+      const guestButton = document.querySelector("#landing_guest_button");
 
       guestButton.addEventListener("click", (e) => {
         e.preventDefault();
