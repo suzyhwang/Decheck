@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="stylesheet" href="signup.css" />
+    <link rel="stylesheet" href="styles/css/signup.css" />
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
     <title>Decheck</title>
   </head>
@@ -11,13 +11,17 @@
     <header>
       <nav id="header_navigator">
         <div class="header_divider logo">
-          <img src="./decheck_logo.svg" alt="logo" />
+          <a href="landing.html">
+            <img src="./images/decheck_logo.svg" alt="logo" />
+          </a>
         </div>
         <div class="header_divider home_mypage">
           <span class="home_button header_middle">
             <a href="index.html"> 홈 </a>
           </span>
-          <span class="mypage_button header_middle">마이페이지</span>
+          <span class="mypage_button header_middle">
+            <a href="mypage.html"> 마이페이지 </a>
+          </span>
         </div>
         <div class="header_divider login_area">
           <a class="a_hover" href="login.html">
@@ -31,8 +35,8 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
-
     <script src="./firebase.js"></script>
+
     <div id="container">
       <div class="login_container">
         <form id="registerForm">
@@ -49,9 +53,10 @@
           />
           <label for="userEmail">이메일</label>
           <div class="email_container">
-            <input type="email" name="userEmail" required />
-            <button id="email_check_btn">중복 확인</button>
+            <input id="user_email" type="email" name="userEmail" required />
+            <button id="email_check_btn" class="button">중복 확인</button>
           </div>
+          <div id="email_format">이메일을 형식에 맞게 작성해주세요.</div>
           <div id="email_check">이메일 중복 확인이 필요합니다.</div>
           <div id="email_fail">이미 가입된 이메일입니다.</div>
           <div id="email_pass">사용 가능한 이메일입니다.</div>
@@ -65,7 +70,14 @@
           <div id="password_not_match" class="warning_msg">
             비밀번호가 일치하지 않습니다. 다시 확인해주세요.
           </div>
-          <button class="login_button" type="submit">확인</button>
+          <button
+            id="login_button"
+            class="button"
+            type="submit"
+            disabled="true"
+          >
+            확인
+          </button>
         </form>
 
         <a href="login.html">
@@ -77,7 +89,7 @@
     <footer>
       <a href="https://github.com/suzyhwang/Decheck/wiki" target="_blank">
         <div id="github_container">
-          <img src="github_icon.svg" alt="github_icon" />
+          <img src="./images/github_icon.svg" alt="github_icon" />
           <span id="github_name">suzyhwang</span>
         </div>
       </a>
@@ -88,14 +100,45 @@
       const emailCheck = document.querySelector("#email_check_btn");
       const emailUsable = document.querySelector("#email_pass");
       const emailNotUsable = document.querySelector("#email_fail");
+      const emailInvalid = document.querySelector("#email_format");
       const warningMsg = document.querySelector("#password_not_match");
       const registerForm = document.querySelector("#registerForm");
       const passwordNotSuit = document.querySelector("#password_not_suit");
+      let db = firebase.firestore();
+      let equalPassword = false;
+      let validEmail = false;
+      let validNickname = false;
+      const loginButton = document.querySelector("#login_button");
+      const userEmail = document.querySelector("#user_email");
+
+      // const db = firebase.firestore();
+      // db.collection("todolist")
+      //   .get()
+      //   .then((res) => {
+      //     res.forEach((doc) => {
+      //       const todo = document.querySelector(".test");
+      //       let todoDiv = document.createElement("span");
+      //       let todoInput = document.createElement("input");
+      //       todoInput.type = "checkbox";
+      //       todoInput.checked = doc.data().boolean;
+      //       todo.append(todoInput);
+      //       todo.append(todoDiv);
+      //       todoDiv.textContent = `${doc.data().title}`;
+      //     });
+      //   });
+
       registerForm.addEventListener("input", function (e) {
         e.preventDefault();
         const email = registerForm["userEmail"].value;
         const password = registerForm["userPassword"].value;
         const passwordCheck = registerForm["userPasswordCheck"].value;
+        const nickname = registerForm["userNickname"].value;
+
+        if (nickname.length >= 1) {
+          validNickname = true;
+        } else if (nickname.length === 0) {
+          validNickname = false;
+        }
 
         function Inspect(data, type) {
           switch (type) {
@@ -128,17 +171,29 @@
                   emailCheckReqMsg.style.display = "none";
                   emailUsable.style.display = "none";
                   emailNotUsable.style.display = "block";
+                  emailInvalid.style.display = "none";
+                  validEmail = false;
                   console.log("등록된 이메일입니다.");
                 } else if (err.code === "auth/user-not-found") {
                   emailCheckReqMsg.style.display = "none";
                   emailUsable.style.display = "block";
                   emailNotUsable.style.display = "none";
+                  emailInvalid.style.display = "none";
+                  validEmail = true;
                   console.log("사용가능한 이메일입니다.");
+                } else if (err.code === "auth/invalid-email") {
+                  emailCheckReqMsg.style.display = "none";
+                  emailUsable.style.display = "none";
+                  emailNotUsable.style.display = "none";
+                  emailInvalid.style.display = "block";
+                  validEmail = false;
                 } else {
                   console.log("auth/too-many-requests");
                   emailCheckReqMsg.style.display = "block";
-                  emailNotUsable.style.display = "none";
                   emailUsable.style.display = "none";
+                  emailNotUsable.style.display = "none";
+                  emailInvalid.style.display = "none";
+                  validEmail = false;
                 }
               });
           },
@@ -147,10 +202,8 @@
 
         if (password.length > 3) {
           if (!Inspect(password, "password")) {
-            console.log("통과안됨");
             passwordNotSuit.style.visibility = "visible";
           } else if (Inspect(password, "password")) {
-            console.log("통과!");
             passwordNotSuit.style.visibility = "hidden";
           }
         }
@@ -161,8 +214,22 @@
           password !== passwordCheck
         ) {
           warningMsg.style.visibility = "visible";
-        } else if (password === passwordCheck) {
+          equalPassword = false;
+        } else if (
+          password.length > 3 &&
+          passwordCheck.length > 3 &&
+          password === passwordCheck
+        ) {
           warningMsg.style.visibility = "hidden";
+          equalPassword = true;
+        }
+
+        if (validEmail && validNickname && equalPassword) {
+          loginButton.disabled = false;
+          loginButton.style.background = "#DB643E";
+        } else {
+          loginButton.disabled = true;
+          loginButton.style.background = "rgba(219, 100, 62, 0.37);";
         }
 
         registerForm.addEventListener("submit", function (e) {
@@ -172,18 +239,49 @@
             .createUserWithEmailAndPassword(email, password)
             .then((userCredential) => {
               // Signed in
-              console.log(userCredential);
-              var user = userCredential.user;
+
+              let user = userCredential.user;
+              let uid = user.uid;
+
+              db.collection("users")
+                .doc(uid)
+                .set({
+                  nickname,
+                  uid,
+                  social: false,
+                })
+                .then(() => {
+                  db.collection("users")
+                    .doc(uid)
+                    .collection("today")
+                    .doc("today")
+                    .set({
+                      color: "#edb4a3",
+                    })
+                    .then(() => {
+                      console.log("Document successfully written!");
+                      window.location.replace("/index.html");
+                    })
+                    .catch((error) => {
+                      console.error("Error writing document: ", error);
+                    });
+                })
+                .catch((error) => {
+                  console.error("Error writing document: ", error);
+                });
+
               // ...
             })
             .catch((error) => {
-              var errorCode = error.code;
-              var errorMessage = error.message;
+              let errorCode = error.code;
+              let errorMessage = error.message;
               // ..
             });
         });
       });
-      const nickname = registerForm["userNickname"].value;
+
+      // const emailKeyup = userEmail.addEventListener("keyup", () => {
+      // });
       const Register = registerForm.addEventListener("submit", (e) => {});
     </script>
   </body>
