@@ -92,3 +92,112 @@
     background: #f5f5f594;
   }
 }
+
+#mobile_top_icon {
+  opacity: 0;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 37.5rem) {
+  #landing_top_container {
+    font-size: 14px;
+    text-align: center;
+    flex-direction: column-reverse;
+  }
+  #top_img_container {
+    margin: 32px 0 35px 0;
+    img {
+      width: 128px;
+      height: 163.5px;
+    }
+  }
+  #top_txt_container {
+    width: 50%;
+    word-break: keep-all;
+  }
+  #landing_bottom_container {
+    font-size: 14px;
+    text-align: center;
+    flex-direction: column;
+  }
+  #bottom_img_container {
+    img {
+      width: 267px;
+      height: 178px;
+    }
+  }
+  #bottom_txt_container {
+    margin: 20px 0 50px 0;
+    width: 35%;
+    word-break: keep-all;
+  }
+
+  #landing_guest_button {
+    width: 70px;
+    height: 27px;
+    font-size: 10px;
+    line-height: 24px;
+  }
+
+  #landing_login_button {
+    width: 70px;
+    height: 27px;
+    font-size: 10px;
+    line-height: 24px;
+  }
+  #landing_button_container {
+    width: 156px;
+    margin: 33px 0 21px 0;
+  }
+  #background_container {
+    svg {
+      display: none;
+    }
+  }
+  #body_container {
+    background-color: rgba(219, 100, 62, 0.1);
+  }
+  footer {
+    font-size: 12px;
+  }
+  footer img {
+    width: 18px;
+    height: 18px;
+  }
+  #github_container {
+    width: 90px;
+    margin-right: 35px;
+  }
+  #inquiry_txt {
+    width: 50px;
+  }
+  #github_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+  }
+  #kakao_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 13px;
+    margin-right: 4.58px;
+  }
+  .login_container {
+    border: none;
+    transition: 0.5s all;
+  }
+  #mobile_top_icon {
+    opacity: 1;
+  }
+  #container {
+    background-color: #fdfbfe;
+    margin-top: 0px;
+    transition: 0.5s all;
+  }
+  :root {
+    background-color: #fdfbfe;
+    transition: 0.5s all;
+  }
+}

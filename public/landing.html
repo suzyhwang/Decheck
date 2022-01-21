@@ -63,7 +63,7 @@
           내가 컴퓨터 앞에 몇시간 동안 앉아 공부하는지 궁금하시지 않나요?
         </div>
         <div id="top_img_container">
-          <img src="/images/landing1.svg" />
+          <img src="./images/landing1.svg" />
         </div>
       </div>
       <div id="landing_button_container">
@@ -74,7 +74,7 @@
       </div>
       <div id="landing_bottom_container">
         <div id="bottom_img_container">
-          <img src="/images/landing2.svg" />
+          <img src="./images/landing2.svg" />
         </div>
         <div id="bottom_txt_container">
           DeCheck는 출결 기록으로 내 기록시간을<br />카톡으로 친구들에게
@@ -82,6 +82,7 @@
           함께 개발 실력을 향상해보세요 !
         </div>
       </div>
+      <img id="mobile_top_icon" src="./images/mobile_top_icon.svg" />
     </main>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
@@ -92,8 +93,8 @@
 
     <script>
       const db = firebase.firestore();
-      let headerLoginHref = document.querySelector(".a_hover");
-      let headerLoginButton = document.querySelector("#header_login_button");
+      const headerLoginHref = document.querySelector(".a_hover");
+      const headerLoginButton = document.querySelector("#header_login_button");
       const openButton = document.querySelector("#header_login_button");
       const landingLoginButton = document.querySelector(
         "#landing_login_button"
@@ -102,6 +103,13 @@
       const closeButton = modal.querySelector("#modal_close_button");
       const modalBackground = modal.querySelector(".modal__background");
       const logoutButton = modal.querySelector("#modal_logout_button");
+
+      // 모바일 버젼 위로가기
+      const mobileTopIcon = document.querySelector("#mobile_top_icon");
+      mobileTopIcon.addEventListener("click", () => {
+        window.scrollTo({ top: 0, left: 0, behavior: "smooth" });
+      });
+
       // 유저 관리 함수 시작
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
