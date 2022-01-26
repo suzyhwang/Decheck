@@ -116,12 +116,18 @@
             </div>
           </div>
           <div id="password_edit_page">
-            <div class="input_container">
+            <form class="input_container" id="password_container">
               <label>비밀번호</label>
-              <input type="password" />
+              <input id="password_edit_input" type="password" />
+              <div id="password_not_suit" class="warning_msg">
+                8~16글자, 영문 대소문자, 숫자, 특수문자를 사용하세요.
+              </div>
               <label>비밀번호 확인</label>
-              <input type="password" />
-            </div>
+              <input id="password_confirm_input" type="password" />
+              <div id="password_not_match" class="warning_msg">
+                비밀번호가 일치하지 않습니다. 다시 확인해주세요.
+              </div>
+            </form>
             <div class="m_button_container">
               <button id="submit_password_edit" class="orange_button">
                 변경
@@ -130,6 +136,10 @@
                 취소
               </button>
             </div>
+          </div>
+          <div id="password_changed_page">
+            <div>비밀번호 변경이 완료되었습니다.</div>
+            <button>확인</button>
           </div>
         </div>
         <div id="today_sentence_page">
@@ -162,8 +172,11 @@
 
     <script>
       const db = firebase.firestore();
-      let headerLoginHref = document.querySelector(".a_hover");
-      let headerLoginButton = document.querySelector("#header_login_button");
+      let userUid = "";
+      let userSocial = "";
+      const headerLoginHref = document.querySelector(".a_hover");
+      const headerLoginButton = document.querySelector("#header_login_button");
+      let equalPassword = false;
       const openButton = document.querySelector("#header_login_button");
       const openDeleteAccountButton = document.querySelector("#delete_account");
       const modal = document.querySelector(".modal");
@@ -182,7 +195,8 @@
         if (user) {
           // User is signed in, see docs for a list of available properties
           // https://firebase.google.com/docs/reference/js/firebase.User
-          var uid = user.uid;
+          let uid = user.uid;
+          userUid = user.uid;
           // 유저 정보 표시하기
 
           userEmail.textContent = user.email;
@@ -193,6 +207,7 @@
           userDB.get().then((res) => {
             if (res.data()) {
               userName.textContent = `${res.data().nickname} 님`;
+              userSocial = res.data().social;
             }
           });
 
@@ -234,6 +249,7 @@
           const nicknameEditPage = document.querySelector(
             "#nickname_edit_page"
           );
+          const pwSucPage = document.querySelector("#password_changed_page");
           // 버튼 불러오기
           const infoEditBtn = document.querySelector("#info_edit");
           const deleteAccBtn = document.querySelector("#delete_account");
@@ -242,7 +258,6 @@
           );
           const graphBtn = document.querySelector("#graph_btn");
           const cancelBtn = document.querySelectorAll(".white_button");
-          const todayTxt = document.querySelector("#today_input");
           const todayCancelBtn = document.querySelector("#today_input_cancel");
           const todaySubmitBtn = document.querySelector(
             "#submit_today_sentence"
@@ -256,7 +271,19 @@
           const submitPasswordEditBtn = document.querySelector(
             "#submit_password_edit"
           );
+          const pwSucBtn = pwSucPage.childNodes[3];
+
+          // 인풋창 불러오기
+          const todayTxt = document.querySelector("#today_input");
           const nicknameTxt = document.querySelector("#nickname_edit_input");
+          const passwordTxt = document.querySelector("#password_edit_input");
+          const passwordConfirmTxt = document.querySelector(
+            "#password_confirm_input"
+          );
+          // 경고메세지 불러오기
+          const warningMsg = document.querySelector("#password_not_match");
+          const passwordNotSuit = document.querySelector("#password_not_suit");
+
           submitNicknameEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
 
@@ -293,6 +320,69 @@
             }
           }
 
+          // 비밀번호
+          let usablePassword = false;
+          const passwordContainer = document.querySelector(
+            "#password_container"
+          );
+
+          passwordContainer.addEventListener("input", function (e) {
+            e.preventDefault();
+            if (passwordTxt.value.length > 3) {
+              if (!Inspect(passwordTxt.value, "password")) {
+                passwordNotSuit.style.visibility = "visible";
+                usablePassword = false;
+              } else if (Inspect(passwordTxt.value, "password")) {
+                passwordNotSuit.style.visibility = "hidden";
+                usablePassword = true;
+              }
+            }
+
+            if (
+              passwordTxt.value.length > 3 &&
+              passwordConfirmTxt.value.length > 3 &&
+              passwordTxt.value !== passwordConfirmTxt.value
+            ) {
+              warningMsg.style.visibility = "visible";
+              equalPassword = false;
+            } else if (
+              passwordTxt.value.length > 3 &&
+              passwordConfirmTxt.value.length > 3 &&
+              passwordTxt.value === passwordConfirmTxt.value
+            ) {
+              warningMsg.style.visibility = "hidden";
+              equalPassword = true;
+            }
+
+            if (!equalPassword && !usablePassword) {
+              submitPasswordEditBtn.disabled = true;
+            }
+            if (equalPassword && usablePassword) {
+              submitPasswordEditBtn.disabled = false;
+            }
+          });
+
+          submitPasswordEditBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            const user = firebase.auth().currentUser;
+
+            const newPassword = passwordTxt.value;
+            console.log(newPassword);
+            user
+              .updatePassword(newPassword)
+              .then(() => {
+                // Update successful.
+                passwordTxt.value = "";
+                passwordConfirmTxt.value = "";
+                passwordEditPage.style.display = "none";
+                pwSucPage.style.display = "flex";
+              })
+              .catch((error) => {
+                // An error ocurred
+                // ...
+              });
+          });
+
           nicknameEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
 
@@ -302,14 +392,25 @@
 
           passwordEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
-
-            infoButtons.style.display = "none";
-            passwordEditPage.style.display = "block";
+            if (!userSocial) {
+              infoButtons.style.display = "none";
+              passwordEditPage.style.display = "block";
+            }
           });
 
+          pwSucBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            infoEditPage.style.display = "none";
+            pwSucPage.style.display = "none";
+            defaultPage.style.display = "flex";
+            infoButtons.style.display = "flex";
+          });
           // 버튼 마다 이벤트 동작
           infoEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
+            if (userSocial) {
+              passwordEditBtn.style.display = "none";
+            }
             defaultPage.style.display = "none";
             infoEditPage.style.display = "flex";
             todaySentencePage.style.display = "none";
@@ -322,7 +423,6 @@
             todaySentencePage.style.display = "flex";
           });
 
-          console.log(cancelBtn, "SDFASGSD");
           cancelBtn.forEach((el) => {
             el.addEventListener("click", (e) => {
               e.preventDefault();
@@ -332,6 +432,9 @@
               infoButtons.style.display = "flex";
               nicknameEditPage.style.display = "none";
               passwordEditPage.style.display = "none";
+              nicknameTxt.value = "";
+              passwordTxt.value = "";
+              passwordConfirmTxt.value = "";
             });
           });
 

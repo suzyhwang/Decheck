@@ -206,9 +206,6 @@
     line-height: 21px;
     color: #8b8b8b;
   }
-  input[type="password"] {
-    margin-bottom: 30px;
-  }
 }
 
 #m_left_container {
@@ -341,6 +338,29 @@
   display: none;
 }
 
+#password_changed_page {
+  @include flexCenter(column);
+  display: none;
+  width: 100%;
+  height: 100%;
+  font-size: 18px;
+  button {
+    border-style: none;
+    background: #db643e;
+    font-weight: 300;
+    font-size: 16px;
+    line-height: 24px;
+    color: #ffffff;
+    width: 94px;
+    height: 36px;
+    cursor: pointer;
+    margin-top: 100px;
+    &:active {
+      background: #ec6d43;
+    }
+  }
+}
+
 .newmodal {
   display: flex;
   justify-content: center;
@@ -412,4 +432,12 @@
   flex-direction: row;
   width: 216px;
   justify-content: space-between;
+}
+
+.warning_msg {
+  visibility: hidden;
+  color: red;
+  font-size: 12px;
+  font-weight: 300;
+  margin: 10px 0;
 }
