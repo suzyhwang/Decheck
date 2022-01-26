@@ -337,6 +337,8 @@ footer {
   min-height: 98vh;
   background: #fbfbfb;
   overflow: hidden;
+  background-image: url("../../images/landing.svg");
+  background-repeat: no-repeat;
 }
 
 #background_container {
@@ -345,8 +347,6 @@ footer {
   height: 100%;
   top: 80px;
   z-index: 0;
-  background-image: url("../../images/landing.svg");
-  background-repeat: no-repeat;
 }
 
 #landing_container {
@@ -552,7 +552,7 @@ footer {
             flex-direction: column-reverse;
     margin: 0;
   }
-  #background_container {
+  #body_container {
     background-image: none;
   }
   #top_img_container {
