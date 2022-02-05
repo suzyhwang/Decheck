@@ -16,11 +16,13 @@
 }
 
 #home_container {
-  width: 1260px;
+  max-width: 1260px;
+  width: 100%;
   height: 807px;
   background: #fdfbfe;
   @include flexCenter(row);
   margin-bottom: 50px;
+  gap: 20px;
 }
 
 #left_container {
@@ -50,14 +52,16 @@
 #middle_container {
   border-top: 3px solid #e0dde1;
   border-bottom: 3px solid #e0dde1;
-  width: 498px;
+  max-width: 498px;
+  width: 100%;
   height: 280px;
   text-align: center;
   @include flexCenter(column);
 }
 
 #todo_container {
-  width: 80%;
+  width: 100%;
+  max-width: 498px;
   @include flexCenter(column);
 }
 
@@ -66,21 +70,28 @@
   font-size: 20px;
   line-height: 24px;
   display: flex;
-  width: 100%;
   flex-direction: row;
-  // justify-content: space-between;
+  // justify-content: center;
   align-items: center;
-
+  width: 100%;
+  max-width: 498px;
   margin-top: 30px;
+  span {
+    max-width: fit-content;
+    min-width: fit-content;
+  }
 }
 
 #todo_c {
-  width: 333px;
+  display: flex;
+  width: 100%;
   border-bottom: 2px solid #e0dde1;
   color: #8b8b8b;
   img {
     vertical-align: middle;
     cursor: pointer;
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -91,7 +102,7 @@
 
 .text_input {
   border-style: none;
-  width: 306px;
+  width: 100%;
   height: 26px;
   background: transparent;
   &:focus {
@@ -308,7 +319,8 @@ input:checked:focus + .switch-left + .switch-right {
 // 스위치 CSS 끝
 
 #today_record_container {
-  width: 396px;
+  max-width: 396px;
+  width: 100%;
   height: 604px;
   border: 2px solid #e0dde1;
   box-sizing: border-box;
@@ -324,9 +336,8 @@ input:checked:focus + .switch-left + .switch-right {
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  margin-top: 15px;
-  width: 90%;
-  margin-left: 20px;
+  margin: 15px 10px 0 10px;
+
   border-bottom: 3px solid #e0dde1;
 }
 #timer {
@@ -356,6 +367,10 @@ input:checked:focus + .switch-left + .switch-right {
     margin-top: 3.5px;
     margin-right: 25px;
   }
+  div {
+    display: flex;
+    align-items: center;
+  }
   .checkboxImg {
     cursor: pointer;
     margin: 0 5px;
@@ -373,12 +388,12 @@ input:checked:focus + .switch-left + .switch-right {
 #today_record_graph {
   display: flex;
   justify-content: center;
-  margin-top: 5px;
 }
 
 .table {
   display: flex;
-  width: 352px;
+  width: 100%;
+  margin: 10px;
   height: fit-content;
   border-top: 2px solid #e0dde1;
   border-bottom: 2px solid #e0dde1;
@@ -419,7 +434,7 @@ input:checked:focus + .switch-left + .switch-right {
 // 테이블 CSS 끝
 
 input[type="checkbox"] {
-  margin-right: 10px;
+  margin: 0 10px 0 3px;
 }
 
 .editInput {
@@ -445,6 +460,7 @@ input[type="checkbox"] {
 #todo_input_container {
   display: none;
   margin-left: 10px;
+  width: 100%;
 }
 
 #todo_submit {
@@ -469,7 +485,8 @@ input[type="checkbox"] {
 #right_top_container {
   display: flex;
   justify-content: space-between;
-  width: 396px;
+  max-width: 396px;
+  width: 100%;
 }
 
 #color_picker_container {
@@ -485,6 +502,9 @@ input[type="checkbox"] {
 #kakao_container {
   margin: 0;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   span {
     font-weight: 300;
     font-size: 10px;
@@ -500,7 +520,8 @@ input[type="checkbox"] {
   @include flexCenter(row);
 
   margin-top: 10px;
-  width: 498px;
+  max-width: 498px;
+  width: 100%;
   height: 210px;
   border: 2px solid #e0dde1;
   font-weight: 300;
@@ -509,4 +530,75 @@ input[type="checkbox"] {
   text-align: center;
   color: #8b8b8b;
   display: none;
+}
+
+@media screen and (max-width: 820px) {
+  .today_sentence {
+    font-size: 18px;
+    word-break: keep-all;
+  }
+  #todo_top {
+    font-size: 16px;
+  }
+  #todo_nothing {
+    font-size: 14px;
+  }
+  .text_input {
+    &::placeholder {
+      font-size: 12px;
+    }
+  }
+}
+
+@media screen and (max-width: 37.5rem) {
+  #body_container {
+    min-height: max-content;
+    height: 1200px;
+  }
+  #home_container {
+    flex-direction: column;
+  }
+  .today_sentence {
+    font-size: 10px;
+  }
+  .rocker {
+    font-size: 1.5em;
+  }
+  #middle_container {
+    max-width: 320px;
+    height: 162px;
+  }
+  #todo_top {
+    margin: 0;
+    font-size: 14px;
+    width: 100%;
+    max-width: 320px;
+    margin-top: 10px;
+  }
+  #todo_container {
+    width: 100%;
+    max-width: 320px;
+    font-size: 14px;
+  }
+  #todo_nothing {
+    width: 320px;
+    height: 133px;
+    font-size: 10px;
+  }
+  #today_record_container {
+    width: 320px;
+  }
+  #right_top_container {
+    width: 320px;
+  }
+  #today_record_top {
+    font-size: 14px;
+  }
+  .table {
+    width: 284.39px;
+  }
+  .checkboxImg {
+    width: 12px;
+    height: 12px;
+  }
 }

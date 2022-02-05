@@ -76,7 +76,7 @@
           </div>
           <div id="todo_container">
             <div id="todo_top">
-              오늘의 할일
+              <span> 오늘의 할일 </span>
               <div id="add_btn">
                 <svg
                   id="add_container"
@@ -151,50 +151,13 @@
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
 
     <script src="./firebase.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/dom-to-image/2.6.0/dom-to-image.min.js"></script>
-
-    <!--  <script type="text/javascript">
-      function sendLink() {
-        Kakao.Link.sendDefault({
-          objectType: "feed",
-          content: {
-            title: "딸기 치즈 케익",
-            description: "#케익 #딸기 #삼평동 #카페 #분위기 #소개팅",
-            imageUrl:
-              "http://k.kakaocdn.net/dn/Q2iNx/btqgeRgV54P/VLdBs9cvyn8BJXB3o7N8UK/kakaolink40_original.png",
-            link: {
-              mobileWebUrl: "https://developers.kakao.com",
-              webUrl: "https://developers.kakao.com",
-            },
-          },
-          social: {
-            likeCount: 286,
-            commentCount: 45,
-            sharedCount: 845,
-          },
-          buttons: [
-            {
-              title: "웹으로 보기",
-              link: {
-                mobileWebUrl: "https://developers.kakao.com",
-                webUrl: "https://developers.kakao.com",
-              },
-            },
-            {
-              title: "앱으로 보기",
-              link: {
-                mobileWebUrl: "https://developers.kakao.com",
-                webUrl: "https://developers.kakao.com",
-              },
-            },
-          ],
-        });
-      }
-    </script> -->
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
     <script>
       const db = firebase.firestore();
+      const storage = firebase.storage();
       let userUid;
+      let userNickname;
       let headerLoginHref = document.querySelector(".a_hover");
       let headerLoginButton = document.querySelector("#header_login_button");
       const openButton = document.querySelector("#header_login_button");
@@ -210,26 +173,21 @@
       const todoNothing = document.querySelector("#todo_nothing");
       const colorPick = document.querySelector("#color_pick");
 
-      var startRecordHour;
-      var startRecordMin;
-      var startRecordDay;
-      var endRecordHour;
-      var endRecordMin;
-      var endRecordDay;
-      var recordState = true;
+      let startRecordHour;
+      let startRecordMin;
+      let startRecordDay;
+      let endRecordHour;
+      let endRecordMin;
+      let endRecordDay;
+      let recordState = true;
       const timeTxt = document.querySelector("#time_txt");
       // 첫번째 테이블 만들기
       const firstColumn = document.querySelector("#table_first_column");
-      for (let i = 6; i < 30; i++) {
+      for (let i = 0; i < 24; i++) {
         const newDiv = document.createElement("div");
         newDiv.setAttribute("class", "row");
-        if (i <= 12) {
-          newDiv.textContent = i;
-        } else if (i > 12 && i <= 24) {
-          newDiv.textContent = i - 12;
-        } else if (i > 24) {
-          newDiv.textContent = i - 24;
-        }
+
+        newDiv.textContent = i;
 
         firstColumn.appendChild(newDiv);
       }
@@ -247,6 +205,12 @@
       switchController.addEventListener("change", (e) => {});
 
       const timeArr = [
+        "00",
+        "01",
+        "02",
+        "03",
+        "04",
+        "05",
         "06",
         "07",
         "08",
@@ -265,22 +229,21 @@
         21,
         22,
         23,
-        "00",
-        "01",
-        "02",
-        "03",
-        "04",
-        "05",
       ];
       const timeCalArr = [
         0, 6, 12, 18, 24, 30, 36, 42, 48, 54, 60, 66, 72, 78, 84, 90, 96, 102,
         108, 114, 120, 126, 132, 138,
       ];
       let resultTime = [];
-
-      const todayDate = `${new Date().getFullYear()} ${
-        new Date().getMonth() + 1
-      } ${new Date().getDate()}`;
+      let todayMonth = new Date().getMonth() + 1;
+      if (todayMonth < 10) {
+        todayMonth = "0" + todayMonth;
+      }
+      let todayDay = new Date().getDate();
+      if (todayDay < 10) {
+        todayDay = "0" + todayDay;
+      }
+      const todayDate = `${new Date().getFullYear()} ${todayMonth} ${todayDay}`;
 
       function timeRecorder(arr, idx) {
         if (resultTime.indexOf(idx) === -1) {
@@ -313,9 +276,7 @@
                     .update({
                       color: e.target.value,
                     })
-                    .then(() => {
-                      console.log("색깔 업데이트");
-                    })
+                    .then(() => {})
                     .catch((err) => console.error(err));
                 });
 
@@ -359,7 +320,6 @@
 
                         // colorPick.value = "#edb4a3";
                         colorPick.addEventListener("change", (e) => {
-                          console.log(e.target.value, "@@");
                           for (let i = 0; i < resultTime.length; i++) {
                             checkTime(resultTime[i] - 1, e.target.value);
                           }
@@ -370,9 +330,7 @@
                             .update({
                               color: e.target.value,
                             })
-                            .then(() => {
-                              console.log("색깔 업데이트");
-                            })
+                            .then(() => {})
                             .catch((err) => console.error(err));
                         });
                         for (let i = 0; i < resultTime.length; i++) {
@@ -405,6 +363,58 @@
                       })
                       .then(() => {
                         console.log("Document successfully written! 새로 추가");
+                        db.collection("users")
+                          .doc(uid)
+                          .collection("timeRecord")
+                          .doc(todayDate)
+                          .get()
+                          .then((res) => {
+                            if (res.data()) {
+                              resultTime = res.data().resultTime;
+                            }
+                            // 테이블 색 채우기
+
+                            // colorPick.value = "#edb4a3";
+                            colorPick.addEventListener("change", (e) => {
+                              console.log(e.target.value, "@@");
+                              for (let i = 0; i < resultTime.length; i++) {
+                                checkTime(resultTime[i] - 1, e.target.value);
+                              }
+                              db.collection("users")
+                                .doc(uid)
+                                .collection("today")
+                                .doc("today")
+                                .update({
+                                  color: e.target.value,
+                                })
+                                .then(() => {
+                                  console.log("색깔 업데이트");
+                                })
+                                .catch((err) => console.error(err));
+                            });
+
+                            for (let i = 0; i < resultTime.length; i++) {
+                              checkTime(resultTime[i] - 1, colorPick.value);
+                            }
+                            if (resultTime) {
+                              let timeToMin = resultTime.length * 10;
+                              if (timeToMin < 60) {
+                                timeTxt.textContent = `${timeToMin}분`;
+                              } else if (
+                                timeToMin >= 60 &&
+                                timeToMin % 60 !== 0
+                              ) {
+                                timeTxt.textContent = `${(
+                                  timeToMin / 60
+                                ).toFixed(0)}시간 ${timeToMin % 60}분`;
+                              } else {
+                                timeTxt.textContent = `${(
+                                  timeToMin / 60
+                                ).toFixed(0)}시간`;
+                              }
+                            }
+                          })
+                          .catch((err) => console.error(err));
                       });
                   });
               });
@@ -418,17 +428,17 @@
 
       // 시간 보여주는 함수
       function showTime() {
-        var date = new Date();
-        var day = date.getDate();
-        var h = date.getHours(); // 0 - 23
-        var m = date.getMinutes(); // 0 - 59
-        var s = date.getSeconds(); // 0 - 59
+        let date = new Date();
+        let day = date.getDate();
+        let h = date.getHours(); // 0 - 23
+        let m = date.getMinutes(); // 0 - 59
+        let s = date.getSeconds(); // 0 - 59
 
         h = h < 10 ? "0" + h : h;
         m = m < 10 ? "0" + m : m;
         s = s < 10 ? "0" + s : s;
 
-        var time = h + ":" + m + ":" + s + " ";
+        let time = h + ":" + m + ":" + s + " ";
         document.getElementById("MyClockDisplay").innerText = time;
         document.getElementById("MyClockDisplay").textContent = time;
 
@@ -461,7 +471,6 @@
           } else if (50 <= m && 60 > m) {
             timeRecorder(resultTime, hourStartIdx + 6);
           }
-          console.log(resultTime, "ㅂㅐㅐ");
         }
       }
       showTime();
@@ -475,6 +484,16 @@
           // https://firebase.google.com/docs/reference/js/firebase.User
           var uid = user.uid;
           userUid = user.uid;
+
+          db.collection("users")
+            .doc(uid)
+            .get()
+            .then((res) => {
+              if (res.data()) {
+                userNickname = `${res.data().nickname} 님의 `;
+              }
+            });
+
           // ...
           let userEmail = user.email;
           headerLoginButton.textContent = "로그아웃";
@@ -778,39 +797,48 @@
       kakaoShareButton.addEventListener("click", (e) => {
         e.preventDefault();
         var node = document.getElementById("today_record_container");
+        html2canvas(node).then((canvas) => {
+          var imgUrl = canvas.toDataURL("image/jpeg");
 
-        domtoimage
-          .toPng(node)
-          .then(function (dataUrl) {
-            var img = new Image();
-            img.src = dataUrl;
-
-            console.log(img.src);
-            // Kakao.Link.sendDefault({
-            //   objectType: "feed",
-            //   content: {
-            //     title: "오늘의 기록",
-            //     imageUrl: dataUrl,
-            //     link: {
-            //       mobileWebUrl: "http://localhost:5000/",
-            //       webUrl: "http://localhost:5000/",
-            //     },
-            //   },
-
-            //   buttons: [
-            //     {
-            //       title: "나도 기록하러 가기",
-            //       link: {
-            //         mobileWebUrl: "http://localhost:5000/",
-            //         webUrl: "http://localhost:5000/",
-            //       },
-            //     },
-            //   ],
-            // });
-          })
-          .catch(function (error) {
-            console.error("oops, something went wrong!", error);
-          });
+          fetch(imgUrl)
+            .then((res) => res.blob())
+            .then((blob) => {
+              var resultFile = new File(
+                [blob],
+                `${Math.random() * 10000000000000000}`, // 파이어베이스에 저장할 이미지 이름
+                {
+                  type: "image/png",
+                }
+              );
+              return resultFile;
+            })
+            .then((res) => {
+              var storageRef = storage.ref();
+              var imagePath = storageRef.child("result/" + res.name);
+              var uploadImage = imagePath.put(res);
+              uploadImage.on(
+                "state_changed",
+                null,
+                (error) => {},
+                () => {
+                  uploadImage.snapshot.ref
+                    .getDownloadURL()
+                    .then((resultUrl) => {
+                      Kakao.Link.sendCustom({
+                        templateId: 68215,
+                        templateArgs: {
+                          IMG: resultUrl,
+                          USER: userNickname,
+                        },
+                      });
+                    });
+                }
+              );
+            })
+            .catch(function (error) {
+              console.error("oops, something went wrong!", error);
+            });
+        });
       });
     </script>
 
@@ -825,7 +853,11 @@
           <span id="github_name">suzyhwang</span>
         </div>
       </a>
-      <span id="inquiry_txt">문의하기</span>
+      <address>
+        <a href="mailto:soyeongsuzyhwang@gmail.com" id="inquiry_txt">
+          문의하기
+        </a>
+      </address>
     </footer>
   </body>
 </html>

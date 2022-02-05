@@ -256,6 +256,31 @@ a:hover {
           justify-content: space-between;
 }
 
+@media screen and (max-width: 37.5rem) {
+  .modal_txt {
+    font-size: 14px;
+  }
+  #modal_close_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  #modal_logout_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  .modal__content {
+    width: 270px;
+    height: 175px;
+  }
+  .button_container {
+    width: 150px;
+  }
+}
+
 footer {
   width: 100%;
   height: 130px;
@@ -293,6 +318,7 @@ footer {
 #inquiry_txt {
   width: 120px;
   cursor: pointer;
+  font-style: normal;
 }
 
 #a_github {
@@ -341,7 +367,10 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  width: 1260px;
+  max-width: 1260px;
+  width: 100%;
+  gap: 2%;
+  margin: 2%;
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
@@ -357,7 +386,8 @@ footer {
           flex-direction: column;
   -ms-flex-item-align: start;
       align-self: flex-start;
-  margin: 37px 0 0 38px;
+  margin: 5%;
+  word-break: keep-all;
 }
 
 #info_container span {
@@ -382,7 +412,8 @@ footer {
 }
 
 #m_left_button_container {
-  width: 240px;
+  max-width: 240px;
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -391,7 +422,7 @@ footer {
   -webkit-box-pack: justify;
       -ms-flex-pack: justify;
           justify-content: space-between;
-  margin: 0 26px 24px 0;
+  margin: 0 20px 20px 20px;
 }
 
 .white_btn {
@@ -404,6 +435,15 @@ footer {
   border: 1px solid #db643e;
   background: #fdfbfe;
   cursor: pointer;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
 }
 
 .white_btn:active {
@@ -437,7 +477,8 @@ footer {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  width: 612px;
+  max-width: 612px;
+  width: 100%;
   height: 218px;
   background: #fdfbfe;
   -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -460,10 +501,15 @@ footer {
       -ms-flex-align: center;
           align-items: center;
   margin-top: 80px;
+  font-weight: 300;
 }
 
 #m_today_record img {
   margin-right: 10px;
+}
+
+#m_today_record span {
+  font-weight: 500;
 }
 
 #m_right_button_container {
@@ -493,8 +539,8 @@ footer {
 }
 
 #mypage_bottom_container {
-  margin-top: 34px;
-  width: 1260px;
+  max-width: 1260px;
+  width: 100%;
   height: 560px;
   background: #fdfbfe;
   -webkit-box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -506,9 +552,6 @@ footer {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  -webkit-box-pack: center;
-      -ms-flex-pack: center;
-          justify-content: center;
 }
 
 #info_edit_page {
@@ -540,16 +583,22 @@ footer {
 }
 
 .m_title {
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  height: 30px;
-  border-bottom: 2px solid #db643e;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  width: 100%;
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  margin-right: 900px;
   color: #000000;
+}
+
+.m_title span {
+  margin: 30px;
+  border-bottom: 2px solid #db643e;
 }
 
 .m_button_container {
@@ -604,7 +653,7 @@ footer {
   -webkit-box-direction: normal;
       -ms-flex-direction: column;
           flex-direction: column;
-  height: 252px;
+  height: 150px;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -677,16 +726,29 @@ footer {
 }
 
 #m_default_page #m_image_container {
+  width: 100%;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-orient: vertical;
+  -webkit-box-orient: horizontal;
   -webkit-box-direction: normal;
-      -ms-flex-direction: column;
-          flex-direction: column;
-  -webkit-box-pack: end;
-      -ms-flex-pack: end;
-          justify-content: flex-end;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+}
+
+#m_default_page #m_image_container :last-child {
+  margin-bottom: 20px;
+}
+
+#m_default_page #m_image_container :first-child {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 #today_sentence_page {
@@ -815,10 +877,36 @@ footer {
 
 #nickname_edit_page {
   display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
 }
 
 #password_edit_page {
   display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+#password_edit_page input {
+  width: 396px;
+  height: 38px;
+}
+
+#password_container {
+  width: 100%;
+  height: 100%;
 }
 
 #password_changed_page {
@@ -856,6 +944,47 @@ footer {
 
 #password_changed_page button:active {
   background: #ec6d43;
+}
+
+#graph_page {
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+#graph_page .m_title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+  width: 100%;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 24px;
+  color: #000000;
+}
+
+#graph_page .m_title span {
+  margin: 30px;
+  border-bottom: 2px solid #db643e;
+}
+
+#graph_page img {
+  width: 24px;
+  height: 24px;
+  vertical-align: auto;
+  margin-top: 15px;
 }
 
 .newmodal {
@@ -960,4 +1089,266 @@ footer {
   font-size: 12px;
   font-weight: 300;
   margin: 10px 0;
+}
+
+@media screen and (max-width: 37.5rem) {
+  #mypage_top_container {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+  }
+  #body_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
+    padding-top: 20px;
+    width: 100%;
+    height: 100%;
+    background: #fbfafc;
+    margin: 0px;
+  }
+  #mypage_top_container {
+    width: 100%;
+    height: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .m_top_container {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    width: 318px;
+    border: 1px solid rgba(153, 153, 153, 0.2);
+  }
+  #m_left_container {
+    height: 159px;
+  }
+  #info_container {
+    margin: 15px 0 0 20px;
+  }
+  #info_container span {
+    font-size: 18px;
+  }
+  #info_container div {
+    font-size: 12px;
+    word-break: keep-all;
+  }
+  #info_container .email_txt {
+    font-size: 14px;
+  }
+  #m_left_button_container {
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 100%;
+    max-width: 320px;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
+    margin: 0 0 20px 0;
+  }
+  #m_right_container {
+    height: 92px;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    place-content: flex-end;
+    margin: 15px 0 15px 0;
+  }
+  #m_right_container #m_today_record {
+    margin: 0;
+    font-size: 14px;
+    line-height: 24px;
+  }
+  #mypage_bottom_container {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+    margin: 0;
+    width: 318px;
+    height: -webkit-fit-content;
+    height: -moz-fit-content;
+    height: fit-content;
+    border: 1px solid rgba(153, 153, 153, 0.2);
+  }
+  #m_default_page {
+    margin-top: 0;
+    font-size: 12px;
+    padding: 100px 20px 150px 20px;
+  }
+  #m_default_page #m_image_container {
+    margin-top: 20px;
+  }
+  #m_default_page #m_image_container img {
+    width: 100px;
+  }
+  #m_default_page #m_image_container :last-child {
+    margin-bottom: 15px;
+  }
+  #info_edit_page {
+    height: -webkit-max-content;
+    height: -moz-max-content;
+    height: max-content;
+  }
+  #info_edit_page #info_buttons {
+    padding-bottom: 50px;
+    max-width: 310px;
+    width: 100%;
+    height: 100%;
+    gap: 18px;
+  }
+  #info_edit_page #info_buttons button {
+    width: 265px;
+    height: 35px;
+    font-size: 12px;
+  }
+  #nickname_edit_page {
+    max-width: 310px;
+    height: 130px;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    padding-bottom: 30px;
+    gap: 30px;
+  }
+  #password_edit_page {
+    max-width: 310px;
+    width: 100%;
+    margin-bottom: 30px;
+  }
+  #password_edit_page label {
+    width: 100%;
+    max-width: 250px;
+  }
+  #password_changed_page div {
+    font-size: 12px;
+  }
+  #password_changed_page button {
+    width: 80px;
+    height: 30px;
+    font-size: 10px;
+    margin: 30px;
+  }
+  #today_sentence_page {
+    padding-bottom: 30px;
+  }
+  #today_sentence_page img {
+    width: 192px;
+    height: 192px;
+  }
+  #today_sentence_page #today_input {
+    width: 100%;
+    height: 100%;
+  }
+  #today_sentence_page #input_only_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    max-width: 255px;
+    max-height: 38px;
+  }
+  #today_sentence_page #today_input_cancel {
+    margin: 0;
+    padding: 0 5px 10px 0;
+  }
+  .input_container {
+    max-width: 310px;
+    width: 100%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+  }
+  .input_container input {
+    max-width: 250px;
+  }
+  .input_container div {
+    font-size: 10px;
+  }
+  .input_container input::-webkit-input-placeholder {
+    font-size: 8px;
+  }
+  .input_container input:-ms-input-placeholder {
+    font-size: 8px;
+  }
+  .input_container input::-ms-input-placeholder {
+    font-size: 8px;
+  }
+  .input_container input::placeholder {
+    font-size: 8px;
+  }
+  .input_container label {
+    font-size: 14px;
+    width: 100%;
+  }
+  .m_button_container {
+    gap: 8px;
+  }
+  .m_button_container button {
+    width: 80px;
+    height: 30px;
+    font-size: 10px;
+  }
+  .m_title {
+    font-size: 14px;
+  }
+  #graph_page img {
+    width: 14px;
+    height: 14px;
+  }
+  #graph_page .m_title {
+    font-size: 14px;
+  }
+  .white_btn {
+    width: 130px;
+    height: 36px;
+    font-size: 14px;
+  }
+  .no_border_btn {
+    width: 136px;
+    height: 40px;
+    font-size: 13px;
+  }
+  .modal__content {
+    width: 270px;
+    height: 175px;
+    margin-bottom: 95%;
+  }
+  .modal__content .button_container {
+    width: 125px;
+  }
+  #modal_delete_account_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_delete_close_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_logout_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_close_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
 }

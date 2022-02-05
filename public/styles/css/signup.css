@@ -6,6 +6,14 @@ body {
   background-color: #e5e5e5;
 }
 
+@media screen and (max-width: 37.5rem) {
+  :root {
+    background-color: #fdfbfe;
+    -webkit-transition: 0.5s all;
+    transition: 0.5s all;
+  }
+}
+
 @font-face {
   font-family: "S-CoreDream";
   src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/S-CoreDream-1Thin.woff") format("woff");
@@ -54,6 +62,8 @@ header {
   background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
   color: #2d2d2d;
   border-bottom: 1px solid #e0dde1;
+  position: relative;
+  z-index: 2;
 }
 
 #header_navigator {
@@ -246,6 +256,31 @@ a:hover {
           justify-content: space-between;
 }
 
+@media screen and (max-width: 37.5rem) {
+  .modal_txt {
+    font-size: 14px;
+  }
+  #modal_close_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  #modal_logout_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  .modal__content {
+    width: 270px;
+    height: 175px;
+  }
+  .button_container {
+    width: 150px;
+  }
+}
+
 footer {
   width: 100%;
   height: 130px;
@@ -254,6 +289,8 @@ footer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  position: relative;
+  z-index: 1;
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
@@ -281,6 +318,7 @@ footer {
 #inquiry_txt {
   width: 120px;
   cursor: pointer;
+  font-style: normal;
 }
 
 #a_github {
@@ -289,6 +327,23 @@ footer {
 
 #a_github:visited {
   color: #2d2d2d;
+}
+
+@media screen and (max-width: 37.5rem) {
+  footer {
+    font-size: 12px;
+  }
+  footer img {
+    width: 18px;
+    height: 18px;
+  }
+  #github_container {
+    width: 90px;
+    margin-right: 35px;
+  }
+  #inquiry_txt {
+    width: 50px;
+  }
 }
 
 .login_container {
@@ -513,4 +568,94 @@ input[name="userNickname"]::placeholder {
   font-size: 12px;
   font-weight: 300;
   margin: 10px 0;
+}
+
+@media screen and (max-width: 37.5rem) {
+  .login_title {
+    font-size: 20px;
+    width: 320px;
+  }
+  label {
+    font-size: 0.8rem;
+  }
+  input {
+    width: 320px;
+    height: 35px;
+  }
+  .button {
+    width: 320px;
+    font-size: 0.8rem;
+  }
+  #email_check_btn {
+    width: 56px;
+    height: 35px;
+    font-size: 10px;
+  }
+  #user_email {
+    width: 258px;
+    height: 35px;
+  }
+  .email_container {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    width: 320px;
+  }
+  .login_button {
+    font-size: 0.8rem;
+  }
+  #warning_msg span {
+    font-size: 0.8rem;
+  }
+  #warning_msg img {
+    width: 15px;
+    height: 15px;
+  }
+  input[name="userNickname"]::-webkit-input-placeholder {
+    font-size: 8px;
+    font-weight: 300;
+  }
+  input[name="userNickname"]:-ms-input-placeholder {
+    font-size: 8px;
+    font-weight: 300;
+  }
+  input[name="userNickname"]::-ms-input-placeholder {
+    font-size: 8px;
+    font-weight: 300;
+  }
+  input[name="userNickname"]::placeholder {
+    font-size: 8px;
+    font-weight: 300;
+  }
+  #go_signup {
+    font-size: 0.8rem;
+  }
+  #github_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 14px;
+    margin-right: 3px;
+  }
+  #kakao_login_icon {
+    vertical-align: text-bottom;
+    width: 14px;
+    height: 13px;
+    margin-right: 4.58px;
+  }
+  .login_container {
+    border: none;
+    -webkit-transition: 0.5s all;
+    transition: 0.5s all;
+  }
+  #container {
+    background-color: #fdfbfe;
+    margin-top: 0px;
+    -webkit-transition: 0.5s all;
+    transition: 0.5s all;
+  }
+  :root {
+    background-color: #fdfbfe;
+    -webkit-transition: 0.5s all;
+    transition: 0.5s all;
+  }
 }

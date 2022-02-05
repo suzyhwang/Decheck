@@ -87,11 +87,12 @@
             상단의 버튼들을 클릭해 이용해 보세요!
           </div>
           <div id="m_image_container">
-            <img src="./images/mypage_img.svg" alt="mypage_default_img" />
+            <img src="./images/mypage_left.svg" alt="mypage_default_img" />
+            <img src="./images/mypage_right.svg" alt="mypage_default_img" />
           </div>
         </div>
         <div id="info_edit_page">
-          <div class="m_title">회원 정보 수정</div>
+          <div class="m_title"><span> 회원 정보 수정 </span></div>
           <div id="info_buttons">
             <button id="nickname_edit_btn">닉네임 변경하기</button>
             <button id="password_edit_btn">비밀번호 변경하기</button>
@@ -143,7 +144,9 @@
           </div>
         </div>
         <div id="today_sentence_page">
-          <div class="m_title">오늘의 한마디</div>
+          <div class="m_title">
+            <span> 오늘의 한마디 </span>
+          </div>
           <img src="./images/today_sentence_img.svg" alt="today_sentence_img" />
           <div id="today_sentence_input_container">
             <div id="input_only_container">
@@ -161,13 +164,24 @@
             </button>
           </div>
         </div>
+        <div id="graph_page">
+          <div class="m_title">
+            <span>
+              <img src="./images/graph_icon.svg" alt="graph_img" />
+              이번 달 그래프
+            </span>
+          </div>
+          <div id="chart_container">
+            <div id="chart"></div>
+          </div>
+        </div>
       </div>
     </div>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-auth.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-firestore.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.6.5/firebase-storage.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
     <script src="./firebase.js"></script>
 
     <script>
@@ -191,6 +205,8 @@
       const cancelButton = newmodal.querySelector("#modal_delete_close_button");
       const userName = document.querySelector(".name_txt");
       const userEmail = document.querySelector(".email_txt");
+
+      let graphSet = false;
       // 유저 관리 함수 시작
       firebase.auth().onAuthStateChanged((user) => {
         if (user) {
@@ -212,9 +228,16 @@
             }
           });
 
-          const todayDate = `${new Date().getFullYear()} ${
-            new Date().getMonth() + 1
-          } ${new Date().getDate()}`;
+          let todayMonth = new Date().getMonth() + 1;
+          if (todayMonth < 10) {
+            todayMonth = "0" + todayMonth;
+          }
+          let todayDay = new Date().getDate();
+          if (todayDay < 10) {
+            todayDay = "0" + todayDay;
+          }
+          const todayDate = `${new Date().getFullYear()} ${todayMonth} ${todayDay}`;
+
           // 시간 불러오기
           const userTime =
             document.querySelector("#m_today_record").children[1];
@@ -251,6 +274,7 @@
             "#nickname_edit_page"
           );
           const pwSucPage = document.querySelector("#password_changed_page");
+          const graphPage = document.querySelector("#graph_page");
           // 버튼 불러오기
           const infoEditBtn = document.querySelector("#info_edit");
           const deleteAccBtn = document.querySelector("#delete_account");
@@ -387,14 +411,14 @@
             e.preventDefault();
 
             infoButtons.style.display = "none";
-            nicknameEditPage.style.display = "block";
+            nicknameEditPage.style.display = "flex";
           });
 
           passwordEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
             if (!userSocial) {
               infoButtons.style.display = "none";
-              passwordEditPage.style.display = "block";
+              passwordEditPage.style.display = "flex";
             }
           });
 
@@ -405,20 +429,23 @@
             defaultPage.style.display = "flex";
             infoButtons.style.display = "flex";
           });
+
           // 버튼 마다 이벤트 동작
           infoEditBtn.addEventListener("click", (e) => {
             e.preventDefault();
-            if (userSocial) {
+            if (userSocial || user.email === "guest@decheck.com") {
               passwordEditBtn.style.display = "none";
             }
             defaultPage.style.display = "none";
             infoEditPage.style.display = "flex";
             todaySentencePage.style.display = "none";
+            graphPage.style.display = "none";
           });
 
           todaySentenceBtn.addEventListener("click", (e) => {
             e.preventDefault();
             defaultPage.style.display = "none";
+            graphPage.style.display = "none";
             infoEditPage.style.display = "none";
             todaySentencePage.style.display = "flex";
           });
@@ -427,6 +454,7 @@
             el.addEventListener("click", (e) => {
               e.preventDefault();
               defaultPage.style.display = "flex";
+              graphPage.style.display = "none";
               infoEditPage.style.display = "none";
               todaySentencePage.style.display = "none";
               infoButtons.style.display = "flex";
@@ -435,6 +463,7 @@
               nicknameTxt.value = "";
               passwordTxt.value = "";
               passwordConfirmTxt.value = "";
+              todayTxt.value = "";
             });
           });
 
@@ -471,6 +500,7 @@
                 title: todayTxt.value,
               })
               .then((res) => {
+                todayTxt.value = "";
                 defaultPage.style.display = "flex";
                 infoEditPage.style.display = "none";
                 todaySentencePage.style.display = "none";
@@ -480,6 +510,66 @@
           todayCancelBtn.addEventListener("click", (e) => {
             e.preventDefault();
             todayTxt.value = "";
+          });
+
+          // 이번달 그래프
+
+          graphBtn.addEventListener("click", (e) => {
+            e.preventDefault();
+            infoEditPage.style.display = "none";
+            defaultPage.style.display = "none";
+            todaySentencePage.style.display = "none";
+            graphPage.style.display = "flex";
+            let arrDates = [];
+            let arrTimes = [];
+            let test = db
+              .collection("users")
+              .doc(uid)
+              .collection("timeRecord")
+              .onSnapshot((querySnapshot) => {
+                querySnapshot.forEach((doc) => {
+                  if (new Date().getMonth() + 1 === +doc.id.split(" ")[1]) {
+                    arrDates.push(doc.id.split(" ")[2]);
+                    arrTimes.push(doc.data().resultTime.length * 10);
+                  }
+                });
+              });
+
+            var options = {
+              chart: {
+                id: "area-datetime",
+                type: "area",
+                height: 350,
+                zoom: {
+                  autoScaleYaxis: true,
+                },
+              },
+              tooltip: {
+                x: {
+                  format: "dd MMM yyyy",
+                },
+              },
+              series: [
+                {
+                  data: arrTimes,
+                },
+              ],
+              xaxis: {
+                categories: arrDates,
+              },
+            };
+
+            var chart = new ApexCharts(
+              document.querySelector("#chart"),
+              options
+            );
+
+            setTimeout(() => {
+              if (!graphSet) {
+                chart.render();
+                graphSet = true;
+              }
+            }, 500);
           });
 
           headerLoginButton.textContent = "로그아웃";
@@ -497,7 +587,9 @@
           }
 
           cancelButton.addEventListener("click", newdisplayModal);
-          openDeleteAccountButton.addEventListener("click", newdisplayModal);
+          if (user.email !== "guest@decheck.com") {
+            openDeleteAccountButton.addEventListener("click", newdisplayModal);
+          }
           openButton.addEventListener("click", displayModal);
           closeButton.addEventListener("click", displayModal);
 
@@ -539,7 +631,11 @@
           <span id="github_name">suzyhwang</span>
         </div>
       </a>
-      <span id="inquiry_txt">문의하기</span>
+      <address>
+        <a href="mailto:soyeongsuzyhwang@gmail.com" id="inquiry_txt">
+          문의하기
+        </a>
+      </address>
     </footer>
   </body>
 </html>

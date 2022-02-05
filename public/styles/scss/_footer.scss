@@ -3,6 +3,8 @@ footer {
   height: 130px;
   background: linear-gradient(0deg, #fdfbfe, #fdfbfe), #fbfbfb;
   display: flex;
+  position: relative;
+  z-index: 1;
   justify-content: center;
   align-items: center;
   border-top: 1px solid #e0dde1;
@@ -20,11 +22,29 @@ footer {
 #inquiry_txt {
   width: 120px;
   cursor: pointer;
+  font-style: normal;
 }
 
 #a_github {
   text-decoration: none;
   &:visited {
     color: #2d2d2d;
+  }
+}
+
+@media screen and (max-width: 37.5rem) {
+  footer {
+    font-size: 12px;
+  }
+  footer img {
+    width: 18px;
+    height: 18px;
+  }
+  #github_container {
+    width: 90px;
+    margin-right: 35px;
+  }
+  #inquiry_txt {
+    width: 50px;
   }
 }

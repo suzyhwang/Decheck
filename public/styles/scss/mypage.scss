@@ -17,7 +17,10 @@
 
 #mypage_top_container {
   display: flex;
-  width: 1260px;
+  max-width: 1260px;
+  width: 100%;
+  gap: 2%;
+  margin: 2%;
   justify-content: space-between;
 }
 
@@ -25,7 +28,8 @@
   display: flex;
   flex-direction: column;
   align-self: flex-start;
-  margin: 37px 0 0 38px;
+  margin: 5%;
+  word-break: keep-all;
   span {
     font-weight: bold;
     font-size: 20px;
@@ -47,11 +51,12 @@
 }
 
 #m_left_button_container {
-  width: 240px;
+  max-width: 240px;
+  width: 100%;
   display: flex;
   align-self: flex-end;
   justify-content: space-between;
-  margin: 0 26px 24px 0;
+  margin: 0 20px 20px 20px;
 }
 
 .white_btn {
@@ -64,6 +69,9 @@
   border: 1px solid #db643e;
   background: #fdfbfe;
   cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   &:active {
     background: #f5f5f594;
   }
@@ -78,7 +86,8 @@
 .m_top_container {
   display: flex;
   @include flexCenter(column);
-  width: 612px;
+  max-width: 612px;
+  width: 100%;
   height: 218px;
   background: #fdfbfe;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
@@ -91,8 +100,12 @@
   justify-content: center;
   align-items: center;
   margin-top: 80px;
+  font-weight: 300;
   img {
     margin-right: 10px;
+  }
+  span {
+    font-weight: 500;
   }
 }
 
@@ -117,14 +130,13 @@
 }
 
 #mypage_bottom_container {
-  margin-top: 34px;
-  width: 1260px;
+  max-width: 1260px;
+  width: 100%;
   height: 560px;
   background: #fdfbfe;
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
-  justify-content: center;
 }
 
 #info_edit_page {
@@ -150,14 +162,18 @@
   }
 }
 .m_title {
-  width: fit-content;
-  height: 30px;
-  border-bottom: 2px solid #db643e;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+
   font-weight: 500;
   font-size: 20px;
   line-height: 24px;
-  margin-right: 900px;
   color: #000000;
+  span {
+    margin: 30px;
+    border-bottom: 2px solid #db643e;
+  }
 }
 .m_button_container {
   width: 100%;
@@ -198,7 +214,7 @@
 .input_container {
   display: flex;
   flex-direction: column;
-  height: 252px;
+  height: 150px;
   justify-content: center;
   input::placeholder {
     font-weight: 300;
@@ -232,9 +248,17 @@
   align-items: center;
   flex-direction: column;
   #m_image_container {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-around;
+  }
+  #m_image_container :last-child {
+    margin-bottom: 20px;
+  }
+  #m_image_container :first-child {
+    display: flex;
   }
 }
 
@@ -332,10 +356,25 @@
 
 #nickname_edit_page {
   display: none;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
 }
 
 #password_edit_page {
   display: none;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-evenly;
+  input {
+    width: 396px;
+    height: 38px;
+  }
+}
+
+#password_container {
+  width: 100%;
+  height: 100%;
 }
 
 #password_changed_page {
@@ -358,6 +397,32 @@
     &:active {
       background: #ec6d43;
     }
+  }
+}
+#graph_page {
+  display: none;
+  flex-direction: column;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  .m_title {
+    display: flex;
+    justify-content: flex-start;
+    width: 100%;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: 24px;
+    color: #000000;
+    span {
+      margin: 30px;
+      border-bottom: 2px solid #db643e;
+    }
+  }
+  img {
+    width: 24px;
+    height: 24px;
+    vertical-align: auto;
+    margin-top: 15px;
   }
 }
 
@@ -440,4 +505,237 @@
   font-size: 12px;
   font-weight: 300;
   margin: 10px 0;
+}
+
+@media screen and (max-width: 37.5rem) {
+  #mypage_top_container {
+    flex-direction: column;
+  }
+  #body_container {
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 20px;
+    width: 100%;
+    height: 100%;
+    background: #fbfafc;
+    margin: 0px;
+  }
+  #mypage_top_container {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+  .m_top_container {
+    box-shadow: none;
+    width: 318px;
+    border: 1px solid rgba(153, 153, 153, 0.2);
+  }
+  #m_left_container {
+    height: 159px;
+  }
+  #info_container {
+    margin: 15px 0 0 20px;
+
+    span {
+      font-size: 18px;
+    }
+    div {
+      font-size: 12px;
+
+      word-break: keep-all;
+    }
+    .email_txt {
+      font-size: 14px;
+    }
+  }
+  #m_left_button_container {
+    align-items: center;
+    width: 100%;
+    max-width: 320px;
+    justify-content: space-evenly;
+    margin: 0 0 20px 0;
+  }
+  #m_right_container {
+    height: 92px;
+    display: flex;
+    place-content: flex-end;
+    margin: 15px 0 15px 0;
+    #m_today_record {
+      margin: 0;
+      font-size: 14px;
+      line-height: 24px;
+    }
+  }
+  #mypage_bottom_container {
+    box-shadow: none;
+    margin: 0;
+    width: 318px;
+    height: fit-content;
+    border: 1px solid rgba(153, 153, 153, 0.2);
+  }
+  #m_default_page {
+    margin-top: 0;
+    font-size: 12px;
+    padding: 100px 20px 150px 20px;
+    #m_image_container {
+      img {
+        width: 100px;
+      }
+      margin-top: 20px;
+    }
+    #m_image_container :last-child {
+      margin-bottom: 15px;
+    }
+  }
+
+  #info_edit_page {
+    height: max-content;
+    #info_buttons {
+      padding-bottom: 50px;
+      max-width: 310px;
+      width: 100%;
+      height: 100%;
+      gap: 18px;
+
+      button {
+        width: 265px;
+        height: 35px;
+        font-size: 12px;
+      }
+    }
+  }
+  #nickname_edit_page {
+    max-width: 310px;
+    height: 130px;
+    justify-content: space-between;
+    padding-bottom: 30px;
+    gap: 30px;
+  }
+  #password_edit_page {
+    max-width: 310px;
+    width: 100%;
+    margin-bottom: 30px;
+    label {
+      width: 100%;
+      max-width: 250px;
+    }
+  }
+
+  #password_changed_page {
+    div {
+      font-size: 12px;
+    }
+    button {
+      width: 80px;
+      height: 30px;
+      font-size: 10px;
+      margin: 30px;
+    }
+  }
+
+  #today_sentence_page {
+    padding-bottom: 30px;
+    img {
+      width: 192px;
+      height: 192px;
+    }
+    #today_input {
+      width: 100%;
+      height: 100%;
+    }
+    #input_only_container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      max-width: 255px;
+      max-height: 38px;
+    }
+    #today_input_cancel {
+      margin: 0;
+      padding: 0 5px 10px 0;
+    }
+  }
+
+  .input_container {
+    max-width: 310px;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    input {
+      max-width: 250px;
+    }
+    div {
+      font-size: 10px;
+    }
+    input::placeholder {
+      font-size: 8px;
+    }
+    label {
+      font-size: 14px;
+      width: 100%;
+    }
+  }
+  .m_button_container {
+    gap: 8px;
+    button {
+      width: 80px;
+      height: 30px;
+      font-size: 10px;
+    }
+  }
+
+  .m_title {
+    font-size: 14px;
+  }
+
+  #graph_page {
+    img {
+      width: 14px;
+      height: 14px;
+    }
+    .m_title {
+      font-size: 14px;
+    }
+  }
+
+  .white_btn {
+    width: 130px;
+    height: 36px;
+    font-size: 14px;
+  }
+  .no_border_btn {
+    width: 136px;
+    height: 40px;
+    font-size: 13px;
+  }
+
+  .modal__content {
+    width: 270px;
+    height: 175px;
+    margin-bottom: 95%;
+    .button_container {
+      width: 125px;
+    }
+  }
+  #modal_delete_account_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_delete_close_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_logout_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
+  #modal_close_button {
+    width: 54.23px;
+    height: 30.57px;
+    font-size: 13px;
+  }
 }

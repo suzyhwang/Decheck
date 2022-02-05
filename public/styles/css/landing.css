@@ -256,6 +256,31 @@ a:hover {
           justify-content: space-between;
 }
 
+@media screen and (max-width: 37.5rem) {
+  .modal_txt {
+    font-size: 14px;
+  }
+  #modal_close_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  #modal_logout_button {
+    width: 54.23px;
+    height: 40.76px;
+    font-size: 13px;
+    line-height: 24px;
+  }
+  .modal__content {
+    width: 270px;
+    height: 175px;
+  }
+  .button_container {
+    width: 150px;
+  }
+}
+
 footer {
   width: 100%;
   height: 130px;
@@ -293,6 +318,7 @@ footer {
 #inquiry_txt {
   width: 120px;
   cursor: pointer;
+  font-style: normal;
 }
 
 #a_github {

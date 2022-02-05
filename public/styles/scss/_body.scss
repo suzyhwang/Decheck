@@ -5,3 +5,10 @@ body {
 :root {
   background-color: #e5e5e5;
 }
+
+@media screen and (max-width: 37.5rem) {
+  :root {
+    background-color: #fdfbfe;
+    transition: 0.5s all;
+  }
+}

@@ -150,7 +150,7 @@ input[name="userPassword"] {
     width: 320px;
   }
 
-  button {
+  .button {
     width: 320px;
     font-size: 0.8rem;
   }
@@ -167,20 +167,7 @@ input[name="userPassword"] {
   #go_signup {
     font-size: 0.8rem;
   }
-  footer {
-    font-size: 12px;
-  }
-  footer img {
-    width: 18px;
-    height: 18px;
-  }
-  #github_container {
-    width: 90px;
-    margin-right: 35px;
-  }
-  #inquiry_txt {
-    width: 50px;
-  }
+
   #github_login_icon {
     vertical-align: text-bottom;
     width: 14px;
@@ -200,10 +187,6 @@ input[name="userPassword"] {
   #container {
     background-color: #fdfbfe;
     margin-top: 0px;
-    transition: 0.5s all;
-  }
-  :root {
-    background-color: #fdfbfe;
     transition: 0.5s all;
   }
 }
