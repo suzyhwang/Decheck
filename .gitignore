@@ -72,3 +72,6 @@ firebase.json
 firestore.indexes.json
 firestore.rules
 storage.rules
+
+package-lock.json
+package.json
